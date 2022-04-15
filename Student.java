@@ -49,4 +49,8 @@ public class Student {
         return Department;
     }
     
+    @Override
+    public String toString(){
+        return getId() + "," +getFullname() + "," + getAddress() + "," +getMobile() + "," + getStage() + "," + getDepartment();
+    }
 }
