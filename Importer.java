@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
@@ -57,6 +58,29 @@ public class Importer
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
             return null;
+        }
+    }
+
+    public static void loadData(String file, ArrayList<Student> students)
+    {
+        try {
+            String student_data = read(file);
+            String []student_data_array = student_data.split("[, \n]");
+            
+            int j = 0;
+            for (int i = 0; i < student_data_array.length/5; i++) 
+            {
+                Student student = new Student();
+                student.setId(Integer.parseInt(student_data_array[j++]));
+                student.setFullname(student_data_array[j++]);
+                student.setAddress(student_data_array[j++]);
+                student.setMobile(student_data_array[j++]);
+                student.setStage(Integer.parseInt(student_data_array[j++]));
+                students.add(student);
+            }
+
+        } catch (Exception e) {
+
         }
     }
 
