@@ -27,7 +27,7 @@ public class Importer
     }
 
     public static void clearFile(String file){
-        FileWriter Writer = null;
+    FileWriter Writer = null;
         try {
             Writer = new FileWriter(file, false);
         } catch (Exception e) {
@@ -45,7 +45,8 @@ public class Importer
 
     public static String read(String file){
         String data = "";
-        try {
+        try 
+        {
             BufferedReader reader = new BufferedReader(new FileReader(file));
             int i;
             while((i = reader.read()) != -1){
