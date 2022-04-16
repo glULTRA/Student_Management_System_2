@@ -1,53 +1,17 @@
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.ArrayList;
-
-import javax.imageio.ImageIO;
-import javax.swing.Action;
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
-import javax.swing.event.AncestorEvent;
-import javax.swing.event.AncestorListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.event.MouseInputAdapter;
-import javax.swing.event.MouseInputListener;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-
+import javax.swing.*;
+import javax.swing.border.*;
+import javax.swing.event.*;
+import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.*;
-
-import org.w3c.dom.events.EventTarget;
-import org.w3c.dom.events.MouseEvent;
-import org.w3c.dom.views.AbstractView;
 
 public class Program 
 {
     public static JFrame window = null;
     public static ArrayList<Student> students = new ArrayList<Student>();
     public static final String file = "file.txt";
+    public static final String course_file = "course.txt";
 
     public static String titles[] = {"ID", "Fullname", "Address", "Mobile", "Stage"};
     static DefaultTableModel model = new DefaultTableModel(titles,0);
