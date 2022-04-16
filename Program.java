@@ -431,8 +431,6 @@ public class Program implements ChangeListener
                                 Object selected_id = table.getModel().getValueAt(selected_item, 0);
                                 int id = Integer.parseInt(selected_id.toString());
 
-                                //String data = model.getDataVector().get(id-1).toString();
-
                                 if(JOptionPane.showConfirmDialog(newWindow, "Do u want to delete it ?", "Delete!", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
                                     for (Student st: students) {
                                         if(st.getId() == id){
@@ -441,7 +439,9 @@ public class Program implements ChangeListener
                                         }
                                     }
                                     Student.updateData(file, students);
+                                    Course.updateData(course_file, students);
                                     save.setVisible(false);
+                                    course_button.setVisible(false);
                                     model.removeRow(selected_item);
                                 }
                             } 
