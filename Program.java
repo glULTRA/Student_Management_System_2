@@ -25,9 +25,16 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.event.MouseInputAdapter;
 import javax.swing.event.MouseInputListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -40,8 +47,9 @@ public class Program
 {
     public static JFrame window = null;
     public static ArrayList<Student> students = new ArrayList<Student>();
+    public static final String file = "file.txt";
 
-    public static String titles[] = {"ID", "Fullname", "Address", "Mobile", "Stage", "Department"};
+    public static String titles[] = {"ID", "Fullname", "Address", "Mobile", "Stage"};
     static DefaultTableModel model = new DefaultTableModel(titles,0);
 
     public static void main(String[] args) 
@@ -150,18 +158,8 @@ public class Program
                 stage_box.setBounds(800, 310, 100, 30);
 
                 // Courses!
-                BufferedImage wPic = null;
-                try {
-                    wPic = ImageIO.read(this.getClass().getResource("wallhaven-wqve97.png"));
-                } catch (IOException e1) {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
-                }
-
                 JPanel course_panel = new JPanel();
-                //JLabel bgImage = new JLabel(new ImageIcon(wPic));
                 course_panel.setLayout(null);
-                //course_panel.add(bgImage);
                 //course_panel.setBackground(Color.DARK_GRAY);
                 course_panel.setBounds(800, 400, 300,370);
                 course_panel.setOpaque(false);
@@ -339,17 +337,14 @@ public class Program
 
                     // Save button
                     JButton save = new JButton("Save");
-                    save = RoundBtn.desginButton(save, 13);
+                    save.setBorder(new RoundBtn(15));
+                    save.setBackground(Color.BLACK);
+                    save.setForeground(Color.WHITE);
+                    save.setOpaque(false);
+                    save.setFocusPainted(false);
                     save.setFont(new Font("Verdana", Font.PLAIN, 12));
-                    save.setBounds(700,620, 100,50);
-
-                    save.addActionListener(new ActionListener() 
-                    {
-                        public void actionPerformed(ActionEvent e)
-                        {
-                            // Save progress
-                        }
-                    });
+                    save.setBounds(700,630, 100,50);
+                    save.setVisible(false);
 
                     // Delete button
                     JButton delete = new JButton("Delete");
@@ -361,15 +356,61 @@ public class Program
                     {
                         public void actionPerformed(ActionEvent e)
                         {
-                            model.removeRow(table.getSelectedRow());
+                            for (int i = 0; i < table.getSelectionModel().getSelectedItemsCount(); i++) 
+                            {
+                                save.setVisible(false);
+                                model.removeRow(table.getSelectionModel().getLeadSelectionIndex());
+                            }
+                        }
+                    });
+
+                    
+
+                    table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+                        @Override
+                        public void valueChanged(ListSelectionEvent event) {
+            
+                            if (!event.getValueIsAdjusting()) {
+                                if (table.getSelectedRow() > -1) {
+                                    save.setVisible(true);
+                                }
+                            }
+                            save.addActionListener(new ActionListener() 
+                            {
+                                public void actionPerformed(ActionEvent e)
+                                {
+                                    // Save progress
+                                    Object infos = new Object();
+                                    for (int i = 0; i < model.getRowCount(); i++) 
+                                    {
+                                        for (int j = 0; j < model.getColumnCount(); j++)
+                                        {
+                                            infos = model.getValueAt(i, j);
+                                            if(j == 0)
+                                            {
+                                                students.get(i).setId(Integer.parseInt(infos.toString()));
+                                            }else if(j == 1){
+                                               students.get(i).setFullname(infos.toString());
+                                            }else if(j == 2){
+                                               students.get(i).setAddress(infos.toString());
+                                            }else if(j == 3){
+                                               students.get(i).setMobile(infos.toString());
+                                            }else if(j == 4){
+                                               students.get(i).setStage(Integer.parseInt(infos.toString()));
+                                            }
+                                        }
+                                        Importer.updateData(file, students);
+                                    }
+                                }
+                            });
                         }
                     });
                     
                     newWindow.add(stage);
                     newWindow.add(stage_box);
                     newWindow.add(Tpanel);
-                    newWindow.add(save);
                     newWindow.add(delete);
+                    newWindow.add(save);
                     newWindow.add(go);
                     
                     newWindow.addWindowListener(new WindowAdapter() {
@@ -389,6 +430,7 @@ public class Program
         panel1.add(studentsDataButton);
         panel1.add(registerButton);
         
+        window.setLocationRelativeTo(null);
         window.add(panel1);
 
         window.setVisible(true);

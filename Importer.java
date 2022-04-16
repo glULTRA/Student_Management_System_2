@@ -61,6 +61,14 @@ public class Importer
         }
     }
 
+    public static void updateData(String file, ArrayList<Student> students){
+        clearFile(file);
+        for (Student student : students) {
+            importData(file, student.toString());
+
+        }
+    }
+
     public static void loadData(String file, ArrayList<Student> students)
     {
         try {
