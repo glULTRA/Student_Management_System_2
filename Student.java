@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Student extends Course 
 {
     private int Id;
@@ -50,6 +52,14 @@ public class Student extends Course
         return Department;
     }
 
+    public static boolean isIdAvailable(ArrayList<Student> students, int id){
+        for (Student student : students) {
+            if(student.getId() == id){
+                return false;
+            }
+        }
+        return true;
+    }
     
     
     @Override

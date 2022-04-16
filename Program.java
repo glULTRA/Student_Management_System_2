@@ -43,11 +43,11 @@ public class Program
         // buttons
         JButton registerButton = new JButton("Register a new student");
         registerButton.setBounds(610,350,300,50);
-        registerButton = RoundBtn.desginButton(registerButton, 25);
+        RoundBtn.desginButton(registerButton, 25);
 
         JButton studentsDataButton = new JButton("Students Data");
         studentsDataButton.setBounds(610,500,300,50);
-        studentsDataButton = RoundBtn.desginButton(studentsDataButton, 25);
+        RoundBtn.desginButton(studentsDataButton, 25);
 
 
 
@@ -74,43 +74,43 @@ public class Program
                 // Input forms
                 // ID
                 JLabel id = new JLabel("ID");
-                id = RoundBtn.desginButton(id);
+                RoundBtn.desginButton(id);
                 id.setBounds(130, 100, 50, 50);
 
                 JTextField id_bar = new JTextField();
-                id_bar = RoundBtn.desginButton(id_bar);
+                RoundBtn.desginButton(id_bar);
                 id_bar.setBounds(130,150,130,60);
 
                 // Fullname
                 JLabel fullname = new JLabel("Fullname");
-                fullname = RoundBtn.desginButton(fullname);
+                RoundBtn.desginButton(fullname);
                 fullname.setBounds(130, 210, 100, 50);
 
                 JTextField fullname_bar = new JTextField();
-                fullname_bar = RoundBtn.desginButton(fullname_bar);
+                RoundBtn.desginButton(fullname_bar);
                 fullname_bar.setBounds(130,260,200,60);
 
                 // Address
                 JLabel address = new JLabel("Address");
-                address = RoundBtn.desginButton(address);
+                RoundBtn.desginButton(address);
                 address.setBounds(130, 320, 100, 50);
 
                 JTextField address_bar = new JTextField();
-                address_bar = RoundBtn.desginButton(address_bar);
+                RoundBtn.desginButton(address_bar);
                 address_bar.setBounds(130,370,200,60);
 
                 // Mobile
                 JLabel mobile = new JLabel("Mobile");
-                mobile = RoundBtn.desginButton(mobile);
+                RoundBtn.desginButton(mobile);
                 mobile.setBounds(800, 100, 100, 50);
 
                 JTextField mobile_bar = new JTextField();
-                mobile_bar = RoundBtn.desginButton(mobile_bar);
+                RoundBtn.desginButton(mobile_bar);
                 mobile_bar.setBounds(800,150,200,60);
 
                 // Stage
                 JLabel stage = new JLabel("Stage");
-                stage = RoundBtn.desginButton(stage);
+                RoundBtn.desginButton(stage);
                 stage.setBounds(800, 250, 100, 50);
 
                 String stages[] = {"1", "2", "3", "4"};
@@ -131,19 +131,16 @@ public class Program
 
                 // course
                 JLabel course = new JLabel("Courses");
-                course = RoundBtn.desginButton(course);
+                RoundBtn.desginButton(course);
                 course.setBounds(100, 0, 100, 50);
 
                 JTextField course_bar = new JTextField();
-                course_bar.setBorder(new RoundBtn(15));
-                course_bar.setOpaque(false);
-                course_bar.setBackground(Color.BLACK);
-                course_bar.setForeground(Color.WHITE);
+                RoundBtn.desginButton(course_bar);
                 course_bar.setHorizontalAlignment(JTextField.CENTER);
                 course_bar.setBounds(70,70,150,40);
 
                 JButton add_course = new JButton("Add");
-                add_course = RoundBtn.desginButton(add_course, 25);
+                RoundBtn.desginButton(add_course, 25);
                 add_course.setBounds(100, 150, 100,50);
 
                 JLabel showCourse = new JLabel();
@@ -193,6 +190,24 @@ public class Program
                     new ActionListener(){
                         public void actionPerformed(ActionEvent e){
                             // Submit data
+                            try {
+                                Student student = new Student();
+                                student.setId(Integer.parseInt(id_bar.getText()));
+
+                                
+                                student.setFullname(fullname_bar.getText());
+                                student.setAddress(address_bar.getText());
+                                student.setMobile(mobile_bar.getText());
+                                student.setStage(stage_box.getSelectedIndex()+1);
+
+                                if(!Student.isIdAvailable(students, student.getId())){
+                                    JOptionPane.showMessageDialog(newWindow, "ID already exist !", "Error", JOptionPane.ERROR_MESSAGE);
+                                }else{
+                                    students.add(student);
+                                    Importer.updateData(file, students);
+                                }
+                            } catch (Exception e2) {
+                            }
                         }
                     }
                 );
@@ -238,7 +253,7 @@ public class Program
 
                     // Switch student Stages!
                     JLabel stage = new JLabel("Stage");
-                    stage = RoundBtn.desginButton(stage);
+                    RoundBtn.desginButton(stage);
                     stage.setBounds(100, 100, 100, 50);
 
 
@@ -312,7 +327,7 @@ public class Program
 
                     // Delete button
                     JButton delete = new JButton("Delete");
-                    delete = RoundBtn.desginButton(delete, 13);
+                    RoundBtn.desginButton(delete, 13);
                     delete.setFont(new Font("Verdana", Font.PLAIN, 12));
                     delete.setBounds(700,570, 100,50);
 
@@ -417,7 +432,7 @@ class RoundBtn implements Border
     RoundBtn(int r) {
         this.r = r;
     }
-    public static JButton desginButton(JButton btn, int radius)
+    public static void desginButton(JButton btn, int radius)
     {
         btn.setFont(new Font("Verdana", Font.BOLD, 18));
         btn.setBackground(Color.BLACK);
@@ -426,24 +441,20 @@ class RoundBtn implements Border
         btn.setFocusPainted(false);
         btn.setContentAreaFilled(true);
         btn.setBorder(new RoundBtn(radius));
-
-        return btn;
     }
 
-    public static JLabel desginButton(JLabel lbl)
+    public static void desginButton(JLabel lbl)
     {
         lbl.setForeground(Color.WHITE);
         lbl.setFont(new Font("Verdana", Font.BOLD, 15));
-        return lbl;
     }
 
-    public static JTextField desginButton(JTextField txtFld)
+    public static void desginButton(JTextField txtFld)
     {
         txtFld.setBackground(Color.WHITE);
         txtFld.setForeground(Color.WHITE);
         txtFld.setOpaque(false);
         txtFld.setBorder(new RoundBtn(20));
-        return txtFld;
     }
 
 
