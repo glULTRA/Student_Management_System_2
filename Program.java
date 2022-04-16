@@ -320,10 +320,19 @@ public class Program
                     {
                         public void actionPerformed(ActionEvent e)
                         {
-                            for (int i = 0; i < table.getSelectionModel().getSelectedItemsCount(); i++) 
-                            {
+                            int selected_item = table.getSelectedRow();
+                            String data = model.getDataVector().get(selected_item).toString();
+
+                            if(JOptionPane.showConfirmDialog(newWindow, "Do u want to delete it ?", "Delete!", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+                                for (Student st: students) {
+                                    if(data.contains(st.getFullname()) && data.contains(st.getAddress()) && data.contains(Integer.toString(st.getId()))){
+                                        students.remove(st);
+                                        break;
+                                    }
+                                }
+                                Importer.updateData(file, students);
                                 save.setVisible(false);
-                                model.removeRow(table.getSelectionModel().getLeadSelectionIndex());
+                                model.removeRow(selected_item);
                             }
                         }
                     });
