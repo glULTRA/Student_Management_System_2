@@ -61,20 +61,17 @@ public class Importer
         }
     }
 
-    public static void updateData(String file, ArrayList<Student> students){
-        clearFile(file);
-        for (Student student : students) {
-            importData(file, student.toString());
+    
 
-        }
-    }
-
-    public static void loadData(String file, ArrayList<Student> students)
+    public static void loadData(String student_file, String course_file, ArrayList<Student> students)
     {
         try {
-            String student_data = read(file);
+            String student_data = read(student_file);
+            String course_data = read(course_file);
             String []student_data_array = student_data.split("[, \n]");
+            String []course_data_array = course_data.split("[, \n]");
             int j = 0;
+            int t = 0;
             for (int i = 0; i < student_data_array.length/5; i++) 
             {
                 Student student = new Student();
@@ -84,6 +81,9 @@ public class Importer
                 student.setMobile(student_data_array[j++]);
                 student.setStage(Integer.parseInt(student_data_array[j++]));
                 j++;
+                student.setCourse1(course_data_array[t++]);
+                student.setCourse2(course_data_array[t++]);
+                student.setCourse3(course_data_array[t++]);
                 students.add(student);
             }
 

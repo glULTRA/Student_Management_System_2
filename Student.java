@@ -52,6 +52,13 @@ public class Student extends Course
         return Department;
     }
 
+    public static void updateData(String file, ArrayList<Student> students){
+        Importer.clearFile(file);
+        for (Student student : students) {
+            Importer.importData(file, student.toString());
+        }
+    }
+
     public static boolean isIdAvailable(ArrayList<Student> students, int id){
         for (Student student : students) {
             if(student.getId() == id){

@@ -6,7 +6,7 @@ import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class Program 
+public class Program implements ChangeListener
 {
     public static JFrame window = null;
     public static ArrayList<Student> students = new ArrayList<Student>();
@@ -16,22 +16,28 @@ public class Program
     public static String titles[] = {"ID", "Fullname", "Address", "Mobile", "Stage"};
     static DefaultTableModel model = new DefaultTableModel(titles,0);
 
+    static JButton registerButton = new JButton("Register a new student");
+    static JButton studentsDataButton = new JButton("Students Data");
+    static JButton submit = new JButton("Submit");
+
+
+
     public static void main(String[] args) 
     {
         // Load data
-        Importer.loadData("file.txt", students);
+        Importer.loadData(file, course_file, students);
         
         // Creating Window
         window = new JFrame("Student Management System");
         window.setBounds(0, 0, 1920,1080);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setLayout(null);
-        window.getContentPane().setBackground(Color.BLACK);
+        window.getContentPane().setBackground(Color.WHITE);
 
 
         // Home
         JPanel panel1 = new JPanel();
-        panel1.setBackground(Color.BLACK);
+        panel1.setBackground(Color.WHITE);
         panel1.setLayout(null);
         panel1.setBounds(5,5,1920,1080);
 
@@ -41,15 +47,14 @@ public class Program
         title.setFont(new Font("Verdana", Font.BOLD, 25));
         
         // buttons
-        JButton registerButton = new JButton("Register a new student");
         registerButton.setBounds(610,350,300,50);
-        RoundBtn.desginButton(registerButton, 25);
+        RoundBtn.desginButton(registerButton, 10);
 
-        JButton studentsDataButton = new JButton("Students Data");
         studentsDataButton.setBounds(610,500,300,50);
-        RoundBtn.desginButton(studentsDataButton, 25);
+        RoundBtn.desginButton(studentsDataButton, 10);
 
-
+        registerButton.addChangeListener(new Program());
+        studentsDataButton.addChangeListener(new Program());
 
         registerButton.addActionListener(new ActionListener()
         {
@@ -59,39 +64,39 @@ public class Program
                 JFrame newWindow = new JFrame("Entering data!");
                 newWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 newWindow.setLayout(null);
-                newWindow.getContentPane().setBackground(Color.BLACK);
+                newWindow.getContentPane().setBackground(Color.WHITE);
 
                 JPanel panel1 = new JPanel();
                 panel1.setBounds(0, 0, 1920, 1080);
-                panel1.setBackground(Color.BLACK);
+                panel1.setBackground(Color.WHITE);
                 panel1.setLayout(null);
 
-                JLabel title = new JLabel("Adding a new student :");
-                title.setForeground(Color.white);
-                title.setBounds(5, 5, 500,100);
+                JLabel title = new JLabel("<html><h1>Adding a new student :</h1></html>");
+                title.setBounds(15, 5, 500,100);
                 title.setFont(new Font("Verdana", Font.BOLD, 25));
 
                 // Input forms
                 // ID
-                JLabel id = new JLabel("ID");
+                JLabel id = new JLabel("<html><h2 style=\"color:#0275d8\">ID</h2></html>");
                 RoundBtn.desginButton(id);
                 id.setBounds(130, 100, 50, 50);
 
                 JTextField id_bar = new JTextField();
                 RoundBtn.desginButton(id_bar);
                 id_bar.setBounds(130,150,130,60);
+                id_bar.setPreferredSize(new Dimension(80,20));
 
                 // Fullname
-                JLabel fullname = new JLabel("Fullname");
+                JLabel fullname = new JLabel("<html><h2  style=\"color:#0275d8\">Fullname</h2></html>");
                 RoundBtn.desginButton(fullname);
-                fullname.setBounds(130, 210, 100, 50);
+                fullname.setBounds(130, 210, 130, 50);
 
                 JTextField fullname_bar = new JTextField();
                 RoundBtn.desginButton(fullname_bar);
                 fullname_bar.setBounds(130,260,200,60);
 
                 // Address
-                JLabel address = new JLabel("Address");
+                JLabel address = new JLabel("<html><h2  style=\"color:#0275d8\"> Address</h2></html>");
                 RoundBtn.desginButton(address);
                 address.setBounds(130, 320, 100, 50);
 
@@ -100,16 +105,16 @@ public class Program
                 address_bar.setBounds(130,370,200,60);
 
                 // Mobile
-                JLabel mobile = new JLabel("Mobile");
+                JLabel mobile = new JLabel("<html><h2 style=\"color:#0275d8\">Phone Number</h2></html>");
                 RoundBtn.desginButton(mobile);
-                mobile.setBounds(800, 100, 100, 50);
+                mobile.setBounds(800, 100, 140, 50);
 
                 JTextField mobile_bar = new JTextField();
                 RoundBtn.desginButton(mobile_bar);
                 mobile_bar.setBounds(800,150,200,60);
 
                 // Stage
-                JLabel stage = new JLabel("Stage");
+                JLabel stage = new JLabel("<html><h2 style=\"color:#0275d8\">Stage</h2></html>");
                 RoundBtn.desginButton(stage);
                 stage.setBounds(800, 250, 100, 50);
 
@@ -117,9 +122,10 @@ public class Program
                 JComboBox<String> stage_box = new JComboBox<>(stages);
                 stage_box.setOpaque(false);
                 stage_box.setFocusable(false);
-                stage_box.setBackground(Color.DARK_GRAY);
+                stage_box.setBackground(new Color(2, 117, 216));
                 stage_box.setForeground(Color.WHITE);
-                stage_box.setBounds(800, 310, 100, 30);
+                //stage_box.setBorder(new LineBorder( new Color(30,45,65), 3));
+                stage_box.setBounds(800, 310, 150, 30);
 
                 // Courses!
                 JPanel course_panel = new JPanel();
@@ -137,54 +143,79 @@ public class Program
                 JTextField course_bar = new JTextField();
                 RoundBtn.desginButton(course_bar);
                 course_bar.setHorizontalAlignment(JTextField.CENTER);
-                course_bar.setBounds(70,70,150,40);
+                course_bar.setBounds(70,70,150,60);
 
-                JButton add_course = new JButton("Add");
+                JButton add_course = new JButton("+  Add");
                 RoundBtn.desginButton(add_course, 25);
-                add_course.setBounds(100, 150, 100,50);
+                add_course.setBounds(85, 150, 120,50);
+
+                JButton clear_course = new JButton("- Clear");
+                RoundBtn.desginButton(clear_course, 25);
+                clear_course.setBackground(new Color(187,33,36));
+                clear_course.setFont(new Font("Arial", Font.BOLD, 13));
+                clear_course.setBounds(190, 310, 100,50);
+                clear_course.setVisible(false);
 
                 JLabel showCourse = new JLabel();
                 showCourse.setBackground(Color.BLACK);
                 showCourse.setForeground(Color.white);
                 showCourse.setBounds(10, 210 , 200, 100);
 
-                
+                String courses[] = {"none", "none", "none"};
+
                 add_course.addActionListener
                 (
-                    new ActionListener(){
-                        int i = 0;
+                    new ActionListener()
+                    {
                         String data = "<html>";
+                        int i = 0;
+
                         @Override
                         public void actionPerformed(ActionEvent e)
                         {
-                            if(i > 2){
-                                JOptionPane.showMessageDialog(newWindow , "Sorry can't add more than 3 course!", "Maximum course added!", JOptionPane.WARNING_MESSAGE);
-                                return;
+                            if (!course_bar.getText().isEmpty())
+                            {
+                                clear_course.setVisible(true);
+                                if(i > 2){
+                                    JOptionPane.showMessageDialog(newWindow , "Sorry can't add more than 3 course!", "Maximum course added!", JOptionPane.WARNING_MESSAGE);
+                                    return;
+                                }
+                                if(i == 0){
+                                    courses[i] = course_bar.getText();
+                                    data += "<h4>" + (i+1) +" :" + course_bar.getText() + "</h4>";
+                                    showCourse.setText(data);
+                                    course_bar.setText("");
+                                }else{
+                                    courses[i] = course_bar.getText();
+                                    data =  showCourse.getText() + "<h4>" + (i+1) +" : " + course_bar.getText() +"</h4>";
+                                    showCourse.setText(data);
+                                    course_bar.setText("");
+                                }
+                                i += 1;
+                                data += "</html>";
+                                clear_course.addActionListener(
+                                    new ActionListener() 
+                                    {
+                                        public void actionPerformed(ActionEvent e)
+                                        {
+                                            showCourse.setText("");
+                                            data = "<html>";
+                                            i=0;
+                                            clear_course.setVisible(false);
+                                        }
+                                    }
+                                );
                             }
-                            if(i == 0){
-                                data += "<h4>" + (i+1) +" :" + course_bar.getText() + "</h4>";
-                                showCourse.setText(data);
-                                course_bar.setText("");
-                            }else{
-                                data =  showCourse.getText() + "<h4>" + (i+1) +" : " + course_bar.getText() +"</h4>";
-                                showCourse.setText(data);
-                                course_bar.setText("");
-                            }
-                            i += 1;
-                            data += "</html>";
                         }
                     }
                 );
 
+                
+
                 // Submit
-                JButton submit = new JButton("Submit");
                 submit.setBounds(155,590,180,70);
-                submit.setBorder(new RoundBtn(25));
-                submit.setOpaque(false);
-                submit.setForeground(Color.WHITE);
-                submit.setBackground(Color.BLACK);
-                submit.setFont(new Font("Verdana", Font.BOLD, 30));
-                submit.setFocusPainted(false);
+                RoundBtn.desginButton(submit ,10);
+                submit.addChangeListener(new Program());
 
                 submit.addActionListener(
                     new ActionListener(){
@@ -194,17 +225,22 @@ public class Program
                                 Student student = new Student();
                                 student.setId(Integer.parseInt(id_bar.getText()));
 
-                                
                                 student.setFullname(fullname_bar.getText());
                                 student.setAddress(address_bar.getText());
                                 student.setMobile(mobile_bar.getText());
                                 student.setStage(stage_box.getSelectedIndex()+1);
 
+                                student.setCourse1(courses[0]);
+                                student.setCourse2(courses[1]);
+                                student.setCourse3(courses[2]);
+                                
+
                                 if(!Student.isIdAvailable(students, student.getId())){
                                     JOptionPane.showMessageDialog(newWindow, "ID already exist !", "Error", JOptionPane.ERROR_MESSAGE);
                                 }else{
                                     students.add(student);
-                                    Importer.updateData(file, students);
+                                    Student.updateData(file, students);
+                                    Course.updateData(course_file, students);
                                 }
                             } catch (Exception e2) {
                             }
@@ -216,6 +252,7 @@ public class Program
                 course_panel.add(course);
                 course_panel.add(course_bar);
                 course_panel.add(add_course);
+                course_panel.add(clear_course);
                 course_panel.add(showCourse);
                 
         
@@ -345,7 +382,7 @@ public class Program
                                         break;
                                     }
                                 }
-                                Importer.updateData(file, students);
+                                Student.updateData(file, students);
                                 save.setVisible(false);
                                 model.removeRow(selected_item);
                             }
@@ -387,7 +424,7 @@ public class Program
                                                students.get(i).setStage(Integer.parseInt(infos.toString()));
                                             }
                                         }
-                                        Importer.updateData(file, students);
+                                        Student.updateData(file, students);
                                     }
                                 }
                             });
@@ -423,6 +460,51 @@ public class Program
 
         window.setVisible(true);
     }
+
+    @Override
+    public void stateChanged(ChangeEvent e) {
+        if(e.getSource() == registerButton){
+            if (registerButton.getModel().isPressed()) {
+                registerButton.setOpaque(true);
+                registerButton.setBackground(Color.BLACK);
+            } 
+            else if (registerButton.getModel().isRollover()) {
+                registerButton.setOpaque(true);
+                registerButton.setForeground(Color.WHITE);
+                registerButton.setBackground(new Color(54, 69, 79));
+            } 
+            else {
+                RoundBtn.desginButton(registerButton, 10);
+            }
+        }
+        if(e.getSource() == studentsDataButton){
+            if (studentsDataButton.getModel().isPressed()) {
+                studentsDataButton.setOpaque(true);
+                studentsDataButton.setBackground(new Color(240, 173, 78));
+            } 
+            else if (studentsDataButton.getModel().isRollover()) {
+                studentsDataButton.setOpaque(true);
+                studentsDataButton.setBackground(new Color(255, 195, 0));
+            } 
+            else {
+                RoundBtn.desginButton(studentsDataButton, 10);
+            }
+        }
+        if(e.getSource() == submit){
+            if (submit.getModel().isPressed()) {
+                submit.setOpaque(true);
+                submit.setBackground(new Color(92, 184, 92));
+                
+            } 
+            else if (submit.getModel().isRollover()) {
+                submit.setOpaque(true);
+                submit.setBackground(new Color(175, 225, 175));
+            } 
+            else {
+                RoundBtn.desginButton(submit, 10);
+            }
+        }
+    }
 }
 
 
@@ -435,30 +517,28 @@ class RoundBtn implements Border
     public static void desginButton(JButton btn, int radius)
     {
         btn.setFont(new Font("Verdana", Font.BOLD, 18));
-        btn.setBackground(Color.BLACK);
-        btn.setForeground(Color.white);
+        btn.setBackground(Color.WHITE);
+        btn.setForeground(Color.BLACK);
         btn.setOpaque(false);
         btn.setFocusPainted(false);
-        btn.setContentAreaFilled(true);
+        btn.setContentAreaFilled(false);
         btn.setBorder(new RoundBtn(radius));
     }
 
     public static void desginButton(JLabel lbl)
     {
-        lbl.setForeground(Color.WHITE);
-        lbl.setFont(new Font("Verdana", Font.BOLD, 15));
+        lbl.setForeground(Color.BLACK);
+        lbl.setFont(new Font("TimesRoman", Font.BOLD | Font.ITALIC, 20));
     }
 
     public static void desginButton(JTextField txtFld)
     {
         txtFld.setBackground(Color.WHITE);
-        txtFld.setForeground(Color.WHITE);
-        txtFld.setOpaque(false);
+        txtFld.setForeground(Color.BLACK);
+        txtFld.setOpaque(true);
+        txtFld.setFont(new Font("Serif", Font.BOLD | Font.ITALIC, 17));
         txtFld.setBorder(new RoundBtn(20));
     }
-
-
-    
     
 
     public Insets getBorderInsets(Component c) {

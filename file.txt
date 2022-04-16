@@ -1,4 +1,2 @@
 1,Ahmad,Erbil,7504151617,2,ISE
 2,Mahamad,Suli,7502151617,2,ISE
-3,Mahamad,Suli,750,2,ISE
-4,Mahamad,Suli,750,2,ISE

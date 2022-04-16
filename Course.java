@@ -24,8 +24,15 @@ public class Course
         return courses;
     }
 
-    @Override
-    public String toString(){
-        return getCourses()[0] + "," + getCourses()[1] + "," + getCourses()[3];
+    public static void updateData(String file, ArrayList<Student> students)
+    {
+        Importer.clearFile(file);
+        for (Student student : students) {
+            Importer.importData(file, student.getCourse());
+        }
+    }
+
+    public String getCourse(){
+        return getCourses()[0] + "," + getCourses()[1] + "," + getCourses()[2];
     }
 }
