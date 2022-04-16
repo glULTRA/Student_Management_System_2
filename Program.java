@@ -374,9 +374,12 @@ public class Program implements ChangeListener
                                     }
                                 }else
                                 {
-                                    for (Student student : students) {
-                                        if(student.getStage() ==  selectedStage){
-                                            model.addRow(
+                                    for (Student student : students)
+                                    {
+                                        if(student.getStage() ==  selectedStage)
+                                        {
+                                            model.addRow
+                                            (
                                                 new Object[]{
                                                     student.getId(),
                                                     student.getFullname(),
@@ -388,8 +391,7 @@ public class Program implements ChangeListener
                                             );
                                         }
                                     }
-                                }
-                                
+                                }                                
                              }
                          }
                      );
@@ -496,9 +498,11 @@ public class Program implements ChangeListener
                         public void actionPerformed(ActionEvent e)
                         {
                             int selected_item = table.getSelectedRow();
+                            Object selected_id = table.getModel().getValueAt(selected_item, 0);
+                            int id = Integer.parseInt(selected_id.toString());
                             String course_data = "<html><h1>Courses !</h1>";
                             int j = 0;
-                            for (String course : students.get(selected_item).getCourses()) 
+                            for (String course : students.get(id-1).getCourses()) 
                             {
                                 if(!course.equals("none")){
                                     course_data += "<h4>";
