@@ -428,11 +428,14 @@ public class Program implements ChangeListener
                         {
                             try {
                                 int selected_item = table.getSelectedRow();
-                                String data = model.getDataVector().get(selected_item).toString();
+                                Object selected_id = table.getModel().getValueAt(selected_item, 0);
+                                int id = Integer.parseInt(selected_id.toString());
+
+                                //String data = model.getDataVector().get(id-1).toString();
 
                                 if(JOptionPane.showConfirmDialog(newWindow, "Do u want to delete it ?", "Delete!", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
                                     for (Student st: students) {
-                                        if(data.contains(st.getFullname()) && data.contains(st.getAddress()) && data.contains(Integer.toString(st.getId()))){
+                                        if(st.getId() == id){
                                             students.remove(st);
                                             break;
                                         }
@@ -447,10 +450,6 @@ public class Program implements ChangeListener
                            
                         }
                     });
-
-                    
-
-                    
 
                     table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
                         @Override
@@ -502,14 +501,22 @@ public class Program implements ChangeListener
                             int id = Integer.parseInt(selected_id.toString());
                             String course_data = "<html><h1>Courses !</h1>";
                             int j = 0;
-                            for (String course : students.get(id-1).getCourses()) 
+                            for (Student st: students) 
                             {
-                                if(!course.equals("none")){
-                                    course_data += "<h4>";
-                                    course_data += course;
-                                    course_data += "</h4>";
-                                    j++;
+                                if(st.getId() == id)
+                                {
+                                    for (String course : st.getCourses()) 
+                                    {
+                                        if(!course.equals("none"))
+                                        {
+                                            course_data += "<h4>";
+                                            course_data += course;
+                                            course_data += "</h4>";
+                                            j++;
+                                        }
+                                    }
                                 }
+                                
                             }
                             if(j!=0){
                                 JOptionPane.showMessageDialog(newWindow, course_data);
