@@ -66,7 +66,6 @@ public class Importer
         try {
             String student_data = read(file);
             String []student_data_array = student_data.split("[, \n]");
-            
             int j = 0;
             for (int i = 0; i < student_data_array.length/5; i++) 
             {
@@ -76,6 +75,7 @@ public class Importer
                 student.setAddress(student_data_array[j++]);
                 student.setMobile(student_data_array[j++]);
                 student.setStage(Integer.parseInt(student_data_array[j++]));
+                j++;
                 students.add(student);
             }
 
