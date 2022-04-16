@@ -19,6 +19,15 @@ public class Program implements ChangeListener
     static JButton registerButton = new JButton("Register a new student");
     static JButton studentsDataButton = new JButton("Students Data");
     static JButton submit = new JButton("Submit");
+    static JButton add_course = new JButton("+  Add");
+    static JButton clear_course = new JButton("- Clear");
+    static JButton go = new JButton("Go");
+    static JButton save = new JButton("Save");
+    static JButton delete = new JButton("Delete");
+    static JButton course_button = new JButton("Course");
+
+
+
 
 
 
@@ -116,7 +125,7 @@ public class Program implements ChangeListener
                 // Stage
                 JLabel stage = new JLabel("<html><h2 style=\"color:#0275d8\">Stage</h2></html>");
                 RoundBtn.desginButton(stage);
-                stage.setBounds(800, 250, 100, 50);
+                stage.setBounds(800, 220, 100, 50);
 
                 String stages[] = {"1", "2", "3", "4"};
                 JComboBox<String> stage_box = new JComboBox<>(stages);
@@ -125,41 +134,45 @@ public class Program implements ChangeListener
                 stage_box.setBackground(new Color(2, 117, 216));
                 stage_box.setForeground(Color.WHITE);
                 //stage_box.setBorder(new LineBorder( new Color(30,45,65), 3));
-                stage_box.setBounds(800, 310, 150, 30);
+                stage_box.setBounds(800, 280, 150, 30);
 
                 // Courses!
                 JPanel course_panel = new JPanel();
                 course_panel.setLayout(null);
-                //course_panel.setBackground(Color.DARK_GRAY);
+                
+                course_panel.setBackground(new Color(255,215,0));
+                
                 course_panel.setBounds(800, 400, 300,370);
-                course_panel.setOpaque(false);
-                course_panel.setBorder(new RoundBtn(35));
+                course_panel.setBorder(new RoundBtn(10));
 
                 // course
                 JLabel course = new JLabel("Courses");
                 RoundBtn.desginButton(course);
                 course.setBounds(100, 0, 100, 50);
 
-                JTextField course_bar = new JTextField();
+                JTextField course_bar = new JTextField("new courses..");
                 RoundBtn.desginButton(course_bar);
+                course_bar.setOpaque(true);
+                course_bar.setBackground(new Color(	255,99,71));
                 course_bar.setHorizontalAlignment(JTextField.CENTER);
                 course_bar.setBounds(70,70,150,60);
 
-                JButton add_course = new JButton("+  Add");
-                RoundBtn.desginButton(add_course, 25);
+                RoundBtn.desginButton(add_course, 10);
+                add_course.setOpaque(true);
+                add_course.setBackground(new Color(70,130,180));
                 add_course.setBounds(85, 150, 120,50);
 
-                JButton clear_course = new JButton("- Clear");
-                RoundBtn.desginButton(clear_course, 25);
-                clear_course.setBackground(new Color(187,33,36));
-                clear_course.setFont(new Font("Arial", Font.BOLD, 13));
+                RoundBtn.desginButton(clear_course, 10);
+                clear_course.setOpaque(true);
+                clear_course.setBackground(new Color(217, 83, 79));
                 clear_course.setBounds(190, 310, 100,50);
                 clear_course.setVisible(false);
 
                 JLabel showCourse = new JLabel();
-                showCourse.setBackground(Color.BLACK);
-                showCourse.setForeground(Color.white);
-                showCourse.setBounds(10, 210 , 200, 100);
+                showCourse.setBounds(50, 210 , 300, 100);
+
+                add_course.addChangeListener(new Program());
+                clear_course.addChangeListener(new Program());
 
                 String courses[] = {"none", "none", "none"};
 
@@ -182,12 +195,12 @@ public class Program implements ChangeListener
                                 }
                                 if(i == 0){
                                     courses[i] = course_bar.getText();
-                                    data += "<h4>" + (i+1) +" :" + course_bar.getText() + "</h4>";
+                                    data += "<h4>" + "Course " + (i+1) +" :" + course_bar.getText().toString() + "</h4>";
                                     showCourse.setText(data);
                                     course_bar.setText("");
                                 }else{
                                     courses[i] = course_bar.getText();
-                                    data =  showCourse.getText() + "<h4>" + (i+1) +" : " + course_bar.getText() +"</h4>";
+                                    data =  showCourse.getText() + "<h4>" + "Course " + (i+1) +" : " + course_bar.getText().toString() +"</h4>";
                                     showCourse.setText(data);
                                     course_bar.setText("");
                                 }
@@ -214,7 +227,9 @@ public class Program implements ChangeListener
 
                 // Submit
                 submit.setBounds(155,590,180,70);
-                RoundBtn.desginButton(submit ,10);
+                RoundBtn.desginButton(submit, 10);
+                submit.setOpaque(true);
+                submit.setBackground(new Color(50,205,50));
                 submit.addChangeListener(new Program());
 
                 submit.addActionListener(
@@ -283,7 +298,7 @@ public class Program implements ChangeListener
                 {
                     // New window for data
                     JFrame newWindow = new JFrame();
-                    newWindow.getContentPane().setBackground(Color.BLACK);
+                    newWindow.getContentPane().setBackground(Color.WHITE);
                     newWindow.setLayout(null);
                     newWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                     newWindow.setBounds(0, 0, 1920,1080);
@@ -294,20 +309,17 @@ public class Program implements ChangeListener
                     stage.setBounds(100, 100, 100, 50);
 
 
-                    String stages[] = {"1", "2", "3", "4"};
+                    String stages[] = {"1", "2", "3", "4", "All Stage"};
                     JComboBox<String> stage_box = new JComboBox<>(stages);
                     stage_box.setOpaque(false);
                     stage_box.setFocusable(false);
-                    stage_box.setBackground(Color.DARK_GRAY);
+                    stage_box.setBackground(new Color(70,130,180));
                     stage_box.setForeground(Color.WHITE);
                     stage_box.setBorder(new RoundBtn(10));
                     stage_box.setBounds(200, 100, 150, 50);
 
                     // Table
                     JTable table = new JTable(model);
-                    table.setForeground(Color.WHITE);
-                    table.setGridColor(Color.CYAN);
-                    table.setBackground(Color.DARK_GRAY);
 
                     JScrollPane scrollPane = new JScrollPane(table);
                     scrollPane.setBackground(Color.BLACK);
@@ -316,7 +328,7 @@ public class Program implements ChangeListener
                     table.setFillsViewportHeight(true);
                     
                     JPanel Tpanel=new JPanel();
-                    Tpanel.setBounds(100, 280, 600, 400);
+                    Tpanel.setBounds(100, 200, 600, 400);
                     Tpanel.setLayout(new BorderLayout());
 	                Tpanel.add(scrollPane);
 
@@ -329,75 +341,123 @@ public class Program implements ChangeListener
                                 student.getMobile(),
                                 student.getStage(),
                                 student.getDepartment(),
-                                new JButton("Click me")
                             }
                         );
                     }
 
                      // Go button
-                     JButton go = new JButton("Go");
-                     go.setBackground(Color.BLACK);
-                     go.setForeground(Color.WHITE);
-                     go.setOpaque(false);
-                     go.setBorder(new RoundBtn(15));
-                     go.setFocusPainted(false);
+                     RoundBtn.desginButton(go, 10);
+                     go.setOpaque(true);
+                     go.setBackground(new Color(70,130,180));
+                     go.addChangeListener(new Program());
                      go.setBounds(500, 100, 100, 50);
  
                      go.addActionListener(
                          new ActionListener(){
                              public void actionPerformed(ActionEvent e){
-                                 // Go for new data
+                                // Go for new data
+                                int selectedStage = stage_box.getSelectedIndex() + 1;
+                                model.getDataVector().removeAllElements();
+                                table.repaint();
+                                if(selectedStage == 5){
+                                    for (Student student : students){
+                                        model.addRow(
+                                            new Object[]{
+                                                student.getId(),
+                                                student.getFullname(),
+                                                student.getAddress(),
+                                                student.getMobile(),
+                                                student.getStage(),
+                                                student.getDepartment(),
+                                            }
+                                        );
+                                    }
+                                }else
+                                {
+                                    for (Student student : students) {
+                                        if(student.getStage() ==  selectedStage){
+                                            model.addRow(
+                                                new Object[]{
+                                                    student.getId(),
+                                                    student.getFullname(),
+                                                    student.getAddress(),
+                                                    student.getMobile(),
+                                                    student.getStage(),
+                                                    student.getDepartment(),
+                                                }
+                                            );
+                                        }
+                                    }
+                                }
+                                
                              }
                          }
                      );
 
-                    // Save button
-                    JButton save = new JButton("Save");
-                    save.setBorder(new RoundBtn(15));
-                    save.setBackground(Color.BLACK);
-                    save.setForeground(Color.WHITE);
-                    save.setOpaque(false);
-                    save.setFocusPainted(false);
-                    save.setFont(new Font("Verdana", Font.PLAIN, 12));
-                    save.setBounds(700,630, 100,50);
-                    save.setVisible(false);
+                    // Course button
+                    RoundBtn.desginButton(course_button, 10);
+                    course_button.setOpaque(true);
+                    course_button.setBackground(new Color(255,140,0));
+                    course_button.setBounds(700,410, 100,50);
+                    course_button.setVisible(false);
+                    
 
+                    // Save button
+                    RoundBtn.desginButton(save, 10);
+                    save.setOpaque(true);
+                    save.setBackground(new Color(70,130,180));
+                    save.setBounds(700,530, 100,50);
+                    save.setVisible(false);
+                    
                     // Delete button
-                    JButton delete = new JButton("Delete");
-                    RoundBtn.desginButton(delete, 13);
-                    delete.setFont(new Font("Verdana", Font.PLAIN, 12));
-                    delete.setBounds(700,570, 100,50);
+                    RoundBtn.desginButton(delete, 10);
+                    delete.setOpaque(true);
+                    delete.setBackground(new Color(217, 83, 79));
+                    delete.setBounds(700,470, 100,50);
+
+
+                    course_button.addChangeListener(new Program());
+                    delete.addChangeListener(new Program());
+                    save.addChangeListener(new Program());
 
                     delete.addActionListener(new ActionListener() 
                     {
                         public void actionPerformed(ActionEvent e)
                         {
-                            int selected_item = table.getSelectedRow();
-                            String data = model.getDataVector().get(selected_item).toString();
+                            try {
+                                int selected_item = table.getSelectedRow();
+                                String data = model.getDataVector().get(selected_item).toString();
 
-                            if(JOptionPane.showConfirmDialog(newWindow, "Do u want to delete it ?", "Delete!", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
-                                for (Student st: students) {
-                                    if(data.contains(st.getFullname()) && data.contains(st.getAddress()) && data.contains(Integer.toString(st.getId()))){
-                                        students.remove(st);
-                                        break;
+                                if(JOptionPane.showConfirmDialog(newWindow, "Do u want to delete it ?", "Delete!", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+                                    for (Student st: students) {
+                                        if(data.contains(st.getFullname()) && data.contains(st.getAddress()) && data.contains(Integer.toString(st.getId()))){
+                                            students.remove(st);
+                                            break;
+                                        }
                                     }
+                                    Student.updateData(file, students);
+                                    save.setVisible(false);
+                                    model.removeRow(selected_item);
                                 }
-                                Student.updateData(file, students);
-                                save.setVisible(false);
-                                model.removeRow(selected_item);
+                            } 
+                            catch (Exception e2) {
                             }
+                           
                         }
                     });
 
                     
 
+                    
+
                     table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
                         @Override
-                        public void valueChanged(ListSelectionEvent event) {
-            
+                        public void valueChanged(ListSelectionEvent event) 
+                        {
                             if (!event.getValueIsAdjusting()) {
                                 if (table.getSelectedRow() > -1) {
                                     save.setVisible(true);
+                                    course_button.setVisible(true);
                                 }
                             }
                             save.addActionListener(new ActionListener() 
@@ -430,10 +490,36 @@ public class Program implements ChangeListener
                             });
                         }
                     });
+
+                    course_button.addActionListener(new ActionListener()
+                    {
+                        public void actionPerformed(ActionEvent e)
+                        {
+                            int selected_item = table.getSelectedRow();
+                            String course_data = "<html><h1>Courses !</h1>";
+                            int j = 0;
+                            for (String course : students.get(selected_item).getCourses()) 
+                            {
+                                if(!course.equals("none")){
+                                    course_data += "<h4>";
+                                    course_data += course;
+                                    course_data += "</h4>";
+                                    j++;
+                                }
+                            }
+                            if(j!=0){
+                                JOptionPane.showMessageDialog(newWindow, course_data);
+                            }else{
+                                JOptionPane.showMessageDialog(newWindow, "Didn't joined any course!");
+                            }
+                            j=0;
+                        }
+                    });
                     
                     newWindow.add(stage);
                     newWindow.add(stage_box);
                     newWindow.add(Tpanel);
+                    newWindow.add(course_button);
                     newWindow.add(delete);
                     newWindow.add(save);
                     newWindow.add(go);
@@ -493,17 +579,86 @@ public class Program implements ChangeListener
         if(e.getSource() == submit){
             if (submit.getModel().isPressed()) {
                 submit.setOpaque(true);
-                submit.setBackground(new Color(92, 184, 92));
+                submit.setBackground(new Color(0,255,0));
                 
             } 
             else if (submit.getModel().isRollover()) {
                 submit.setOpaque(true);
-                submit.setBackground(new Color(175, 225, 175));
+                submit.setBackground(new Color(152,251,152));
             } 
             else {
-                RoundBtn.desginButton(submit, 10);
+                submit.setBackground(new Color(50,205,50));
             }
         }
+        if(e.getSource() == add_course || e.getSource() == save){
+            JButton btn = e.getSource().equals(add_course) ? add_course : save;
+            if (btn.getModel().isPressed()) {
+                btn.setOpaque(true);
+                btn.setBackground(new Color(0,191,255));
+                
+            } 
+            else if (btn.getModel().isRollover()) {
+                btn.setOpaque(true);
+                btn.setBackground(new Color(30,144,255));
+            } 
+            else {
+                RoundBtn.desginButton(btn, 10);
+                btn.setOpaque(true);
+                btn.setBackground(new Color(70,130,180));
+            }
+        }
+
+        if(e.getSource() == clear_course || e.getSource() == delete){
+            JButton btn = e.getSource().equals(clear_course) ? clear_course : delete;
+            if (btn.getModel().isPressed()) {
+                btn.setOpaque(true);
+                btn.setBackground(new Color(255,105,180));
+            } 
+            else if (btn.getModel().isRollover()) {
+                btn.setOpaque(true);
+                btn.setBackground(new Color(255,20,147));
+            } 
+            else {
+                btn.setBackground(new Color(217, 83, 79));
+            }
+        }
+        if(e.getSource() == go)
+        {
+            JButton btn = go;
+            if (btn.getModel().isPressed()) {
+                btn.setOpaque(true);
+                btn.setBackground(new Color(0,191,255));
+                
+            } 
+            else if (btn.getModel().isRollover()) {
+                btn.setOpaque(true);
+                btn.setBackground(new Color(30,144,255));
+            } 
+            else {
+                RoundBtn.desginButton(btn, 10);
+                btn.setOpaque(true);
+                btn.setBackground(new Color(70,130,180));
+            }
+        }
+
+        if(e.getSource() == course_button){
+            JButton btn = course_button;
+            if (btn.getModel().isPressed()) {
+                btn.setOpaque(true);
+                btn.setBackground(new Color(255,127,80));
+                
+            } 
+            else if (btn.getModel().isRollover()) {
+                btn.setOpaque(true);
+                btn.setBackground(new Color(255,215,0));
+            } 
+            else {
+                RoundBtn.desginButton(btn, 10);
+                btn.setOpaque(true);
+                btn.setBackground(new Color(255,140,0));
+            }
+        }
+        
     }
 }
 
@@ -516,7 +671,7 @@ class RoundBtn implements Border
     }
     public static void desginButton(JButton btn, int radius)
     {
-        btn.setFont(new Font("Verdana", Font.BOLD, 18));
+        btn.setFont(new Font("Verdana", Font.BOLD, 13));
         btn.setBackground(Color.WHITE);
         btn.setForeground(Color.BLACK);
         btn.setOpaque(false);
@@ -537,7 +692,7 @@ class RoundBtn implements Border
         txtFld.setForeground(Color.BLACK);
         txtFld.setOpaque(true);
         txtFld.setFont(new Font("Serif", Font.BOLD | Font.ITALIC, 17));
-        txtFld.setBorder(new RoundBtn(20));
+        txtFld.setBorder(new RoundBtn(10));
     }
     
 

@@ -1,2 +1,3 @@
 java,cpp,math
-math,word,lpp
+none,none,none
+Java,C++,math
