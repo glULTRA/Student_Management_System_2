@@ -22,9 +22,23 @@ public class Program implements ChangeListener
     static JButton add_course = new JButton("+  Add");
     static JButton clear_course = new JButton("- Clear");
     static JButton go = new JButton("Go");
+    static JButton search = new JButton("Search");
     static JButton save = new JButton("Save");
     static JButton delete = new JButton("Delete");
     static JButton course_button = new JButton("Course");
+
+    public static void addToModel(Student student, DefaultTableModel model){
+        model.addRow(
+            new Object[]{
+                student.getId(),
+                student.getFullname(),
+                student.getAddress(),
+                student.getMobile(),
+                student.getStage(),
+                student.getDepartment(),
+            }
+        );
+    }
 
     public static void main(String[] args) 
     {
@@ -330,31 +344,68 @@ public class Program implements ChangeListener
                     table.setFillsViewportHeight(true);
                     
                     JPanel Tpanel=new JPanel();
-                    Tpanel.setBounds(100, 200, 600, 400);
+                    Tpanel.setBounds(100, 310, 600, 400);
                     Tpanel.setLayout(new BorderLayout());
 	                Tpanel.add(scrollPane);
 
                     for (Student student : students) {
-                        model.addRow(
-                            new Object[]{
-                                student.getId(),
-                                student.getFullname(),
-                                student.getAddress(),
-                                student.getMobile(),
-                                student.getStage(),
-                                student.getDepartment(),
-                            }
-                        );
+                        addToModel(student, model);
                     }
+                    
 
-                     // Go button
-                     RoundBtn.desginButton(go, 10);
-                     go.setOpaque(true);
-                     go.setBackground(new Color(70,130,180));
-                     go.addChangeListener(new Program());
-                     go.setBounds(500, 100, 100, 50);
+                    // Go button
+                    RoundBtn.desginButton(go, 10);
+                    go.setOpaque(true);
+                    go.setBackground(new Color(70,130,180));
+                    go.addChangeListener(new Program());
+                    go.setBounds(400, 100, 100, 50);
+
+                    
+                    // Search 
+                    RoundBtn.desginButton(search, 10);
+                    search.setOpaque(true);
+                    search.setBackground(new Color(50,205,50));
+                    search.addChangeListener(new Program());
+                    search.setBounds(400, 200, 100, 50);
+                    search.addChangeListener(new Program());
+
+                    // Search bar
+                    JTextField search_bar = new JTextField("Search");
+                    RoundBtn.desginButton(search_bar);
+                    search_bar.setOpaque(true);
+                    search_bar.setBounds(200, 200, 200, 50);
+
+                    search.addActionListener(
+                        new ActionListener(){
+                            public void actionPerformed(ActionEvent e)
+                            {
+                                // Go for new data
+
+                                try {
+                                    int id = Integer.parseInt(search_bar.getText());
+                                    boolean id_found = false;
+                                    for (Student student : students) {
+                                        if(student.getId() == id){
+                                            model.getDataVector().removeAllElements();
+                                            table.repaint();
+                                            addToModel(student, model);
+                                            id_found = true;
+                                            break;
+                                        }
+                                    }
+                                    if(!id_found){
+                                        JOptionPane.showMessageDialog(newWindow, "ID is not exist !");
+                                    }
+                                } catch (Exception e2) {
+                                    JOptionPane.showMessageDialog(newWindow, "Please search only by ID!");
+                                }
+                                table.getSelectionModel().clearSelection();
+                            }
+                        }
+                    );
+
  
-                     go.addActionListener(
+                    go.addActionListener(
                          new ActionListener(){
                              public void actionPerformed(ActionEvent e){
                                 // Go for new data
@@ -362,17 +413,8 @@ public class Program implements ChangeListener
                                 model.getDataVector().removeAllElements();
                                 table.repaint();
                                 if(selectedStage == 5){
-                                    for (Student student : students){
-                                        model.addRow(
-                                            new Object[]{
-                                                student.getId(),
-                                                student.getFullname(),
-                                                student.getAddress(),
-                                                student.getMobile(),
-                                                student.getStage(),
-                                                student.getDepartment(),
-                                            }
-                                        );
+                                    for (Student student : students) {
+                                        addToModel(student, model);
                                     }
                                 }else
                                 {
@@ -380,20 +422,11 @@ public class Program implements ChangeListener
                                     {
                                         if(student.getStage() ==  selectedStage)
                                         {
-                                            model.addRow
-                                            (
-                                                new Object[]{
-                                                    student.getId(),
-                                                    student.getFullname(),
-                                                    student.getAddress(),
-                                                    student.getMobile(),
-                                                    student.getStage(),
-                                                    student.getDepartment(),
-                                                }
-                                            );
+                                            addToModel(student, model);
                                         }
                                     }
-                                }                                
+                                }
+                                table.getSelectionModel().clearSelection();
                              }
                          }
                      );
@@ -445,6 +478,7 @@ public class Program implements ChangeListener
                                     save.setVisible(false);
                                     course_button.setVisible(false);
                                     model.removeRow(selected_item);
+                                    
                                 }
                             } 
                             catch (Exception e2) {
@@ -461,7 +495,6 @@ public class Program implements ChangeListener
                                 if (table.getSelectedRow() > -1) {
                                     save.setVisible(true);
                                     course_button.setVisible(true);
-                                    
                                 }
                             }
                         }
@@ -482,13 +515,13 @@ public class Program implements ChangeListener
                                     {
                                         students.get(i).setId(Integer.parseInt(infos.toString()));
                                     }else if(j == 1){
-                                    students.get(i).setFullname(infos.toString());
+                                        students.get(i).setFullname(infos.toString());
                                     }else if(j == 2){
-                                    students.get(i).setAddress(infos.toString());
+                                        students.get(i).setAddress(infos.toString());
                                     }else if(j == 3){
-                                    students.get(i).setMobile(infos.toString());
+                                        students.get(i).setMobile(infos.toString());
                                     }else if(j == 4){
-                                    students.get(i).setStage(Integer.parseInt(infos.toString()));
+                                        students.get(i).setStage(Integer.parseInt(infos.toString()));
                                     }
                                 }
                                 Student.updateData(file, students);
@@ -530,9 +563,13 @@ public class Program implements ChangeListener
                             }else{
                                 JOptionPane.showMessageDialog(newWindow, "Didn't joined any course!");
                             }
+                            table.getSelectionModel().clearSelection();
                             j=0;
                         }
                     });
+
+                    
+        
                     
                     newWindow.add(stage);
                     newWindow.add(stage_box);
@@ -541,6 +578,8 @@ public class Program implements ChangeListener
                     newWindow.add(delete);
                     newWindow.add(save);
                     newWindow.add(go);
+                    newWindow.add(search);
+                    newWindow.add(search_bar);
                     
                     newWindow.addWindowListener(new WindowAdapter() {
                         @Override
@@ -594,18 +633,19 @@ public class Program implements ChangeListener
                 RoundBtn.desginButton(studentsDataButton, 10);
             }
         }
-        if(e.getSource() == submit){
-            if (submit.getModel().isPressed()) {
-                submit.setOpaque(true);
-                submit.setBackground(new Color(0,255,0));
+        if(e.getSource() == submit || e.getSource() == search){
+            JButton btn = e.getSource().equals(search) ? search : submit;
+            if (btn.getModel().isPressed()) {
+                btn.setOpaque(true);
+                btn.setBackground(new Color(0,255,0));
                 
             } 
-            else if (submit.getModel().isRollover()) {
-                submit.setOpaque(true);
-                submit.setBackground(new Color(152,251,152));
+            else if (btn.getModel().isRollover()) {
+                btn.setOpaque(true);
+                btn.setBackground(new Color(152,251,152));
             } 
             else {
-                submit.setBackground(new Color(50,205,50));
+                btn.setBackground(new Color(50,205,50));
             }
         }
         if(e.getSource() == add_course || e.getSource() == save){
@@ -676,7 +716,6 @@ public class Program implements ChangeListener
                 btn.setBackground(new Color(255,140,0));
             }
         }
-        
     }
 }
 
