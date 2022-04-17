@@ -1,6 +1,5 @@
 none,none,none
 Java,C++,math
-a,b,none
 Network,none,none
 FIS,Computer,Org
 spss,adobe,xd
@@ -9,4 +8,5 @@ none,none,none
 none,none,none
 Network,Machine,Learning
 2,OpenGL,CPP
-Data Structures,none,none
+Data,Structures,none
+Cyber Security,Java,none

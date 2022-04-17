@@ -80,6 +80,7 @@ public class Program implements ChangeListener
                 panel1.setBounds(0, 0, 1920, 1080);
                 panel1.setBackground(Color.WHITE);
                 panel1.setLayout(null);
+                
 
                 JLabel title = new JLabel("<html><h1>Adding a new student :</h1></html>");
                 title.setBounds(15, 5, 500,100);
@@ -124,7 +125,7 @@ public class Program implements ChangeListener
                 mobile_bar.setBounds(800,150,200,60);
 
                 // Stage
-                JLabel stage = new JLabel("<html><h2 style=\"color:#0275d8\">Stage</h2></html>");
+                JLabel stage = new JLabel("<html><h2 style=\"background: linear-gradient(to bottom, #33ccff 0%, #ff99cc 100%);\">Stage</h2></html>");
                 RoundBtn.desginButton(stage);
                 stage.setBounds(800, 220, 100, 50);
 
@@ -138,13 +139,25 @@ public class Program implements ChangeListener
                 stage_box.setBounds(800, 280, 150, 30);
 
                 // Courses!
-                JPanel course_panel = new JPanel();
+                JPanel course_panel = new JPanel(){
+                    @Override
+                    protected void paintComponent(Graphics grphcs) {
+                        super.paintComponent(grphcs);
+                        Graphics2D g2d = (Graphics2D) grphcs;
+                        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                                RenderingHints.VALUE_ANTIALIAS_ON);
+                        GradientPaint gp = new GradientPaint(0, 0,
+                                getBackground().brighter().brighter(), 255, getHeight(),
+                                getBackground().darker().darker());
+                        g2d.setPaint(gp);
+                        g2d.fillRect(0, 0, getWidth(), getHeight()); 
+
+                    }
+                };
                 course_panel.setLayout(null);
-                
-                course_panel.setBackground(new Color(255,215,0));
-                
+                course_panel.setBackground(new Color(255,240,70));
                 course_panel.setBounds(800, 400, 300,370);
-                course_panel.setBorder(new RoundBtn(10));
+                course_panel.setBorder(new RoundBtn(19));
 
                 // course
                 JLabel course = new JLabel("Courses");
@@ -154,7 +167,7 @@ public class Program implements ChangeListener
                 JTextField course_bar = new JTextField("new courses..");
                 RoundBtn.desginButton(course_bar);
                 course_bar.setOpaque(true);
-                course_bar.setBackground(new Color(	255,99,71));
+                course_bar.setBackground(new Color(	230,190,70));
                 course_bar.setHorizontalAlignment(JTextField.CENTER);
                 course_bar.setBounds(70,70,150,60);
 
@@ -612,7 +625,7 @@ public class Program implements ChangeListener
                                 Object selected_id = table.getModel().getValueAt(selected_item, 0);
                                 int id = Integer.parseInt(selected_id.toString());
 
-                                if(JOptionPane.showConfirmDialog(newWindow, "Do u want to delete it ?", "Delete!", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+                                if(JOptionPane.showConfirmDialog(newWindow, "Do u want to delete ", "Delete!", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
                                     for (Student st: students) {
                                         if(st.getId() == id){
                                             students.remove(st);
@@ -642,8 +655,6 @@ public class Program implements ChangeListener
                                     save.setVisible(true);
                                     course_button.setVisible(true);
                                 }
-                            }else{
-                                //table.getSelectionModel().clearSelection();
                             }
                         }
                     });
