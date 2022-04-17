@@ -1,3 +1,6 @@
 java,cpp,math
 none,none,none
 Java,C++,math
+a,b,none
+Network,none,none
+FIS,Computer Org,none

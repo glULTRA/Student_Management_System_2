@@ -26,11 +26,6 @@ public class Program implements ChangeListener
     static JButton delete = new JButton("Delete");
     static JButton course_button = new JButton("Course");
 
-
-
-
-
-
     public static void main(String[] args) 
     {
         // Load data
@@ -248,16 +243,23 @@ public class Program implements ChangeListener
                                 student.setCourse1(courses[0]);
                                 student.setCourse2(courses[1]);
                                 student.setCourse3(courses[2]);
-                                
 
-                                if(!Student.isIdAvailable(students, student.getId())){
+                                
+                                if(student.getFullname().isEmpty() || student.getAddress().isEmpty() || student.getMobile().isEmpty()){
+                                    JOptionPane.showMessageDialog(newWindow, "please fill all informations!", "Warning", JOptionPane.WARNING_MESSAGE);
+                                }
+                                else if(!Student.isIdAvailable(students, student.getId())){
                                     JOptionPane.showMessageDialog(newWindow, "ID already exist !", "Error", JOptionPane.ERROR_MESSAGE);
                                 }else{
                                     students.add(student);
                                     Student.updateData(file, students);
                                     Course.updateData(course_file, students);
+                                    JOptionPane.showMessageDialog(newWindow, "Added new student Successfuly !");
+                                    newWindow.dispose();
                                 }
                             } catch (Exception e2) {
+                                JOptionPane.showMessageDialog(newWindow, "please make sure id is number!", "Warning", JOptionPane.WARNING_MESSAGE);
+
                             }
                         }
                     }
@@ -459,39 +461,44 @@ public class Program implements ChangeListener
                                 if (table.getSelectedRow() > -1) {
                                     save.setVisible(true);
                                     course_button.setVisible(true);
+                                    
                                 }
                             }
-                            save.addActionListener(new ActionListener() 
-                            {
-                                public void actionPerformed(ActionEvent e)
-                                {
-                                    // Save progress
-                                    Object infos = new Object();
-                                    for (int i = 0; i < model.getRowCount(); i++) 
-                                    {
-                                        for (int j = 0; j < model.getColumnCount(); j++)
-                                        {
-                                            infos = model.getValueAt(i, j);
-                                            if(j == 0)
-                                            {
-                                                students.get(i).setId(Integer.parseInt(infos.toString()));
-                                            }else if(j == 1){
-                                               students.get(i).setFullname(infos.toString());
-                                            }else if(j == 2){
-                                               students.get(i).setAddress(infos.toString());
-                                            }else if(j == 3){
-                                               students.get(i).setMobile(infos.toString());
-                                            }else if(j == 4){
-                                               students.get(i).setStage(Integer.parseInt(infos.toString()));
-                                            }
-                                        }
-                                        Student.updateData(file, students);
-                                    }
-                                }
-                            });
                         }
                     });
-
+                    
+                    save.addActionListener(new ActionListener() 
+                    {
+                        public void actionPerformed(ActionEvent e)
+                        {
+                            // Save progress
+                            Object infos = new Object();
+                            for (int i = 0; i < model.getRowCount(); i++) 
+                            {
+                                for (int j = 0; j < model.getColumnCount(); j++)
+                                {
+                                    infos = model.getValueAt(i, j);
+                                    if(j == 0)
+                                    {
+                                        students.get(i).setId(Integer.parseInt(infos.toString()));
+                                    }else if(j == 1){
+                                    students.get(i).setFullname(infos.toString());
+                                    }else if(j == 2){
+                                    students.get(i).setAddress(infos.toString());
+                                    }else if(j == 3){
+                                    students.get(i).setMobile(infos.toString());
+                                    }else if(j == 4){
+                                    students.get(i).setStage(Integer.parseInt(infos.toString()));
+                                    }
+                                }
+                                Student.updateData(file, students);
+                                save.setVisible(false);
+                                JOptionPane.showMessageDialog(newWindow , "Saved successfuly!");
+                                table.getSelectionModel().clearSelection();
+                                return;
+                            }
+                        }
+                    });
                     course_button.addActionListener(new ActionListener()
                     {
                         public void actionPerformed(ActionEvent e)
