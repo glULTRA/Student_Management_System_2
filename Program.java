@@ -385,8 +385,6 @@ public class Program implements ChangeListener
 
                     // Table
                     JTable table = new JTable(model);
-                    table.setBorder(new RoundBtn(10));
-                    table.setOpaque(false);
 
                     JScrollPane scrollPane = new JScrollPane(table);
                     scrollPane.setBackground(Color.BLACK);
@@ -500,7 +498,6 @@ public class Program implements ChangeListener
                                 
                                 model.getDataVector().removeAllElements();
                                 table.repaint();
-                                table.getSelectionModel().clearSelection();
                                 if(selectedStage == 5){
                                     for (Student student : students) {
                                         addToModel(student, model);
@@ -646,8 +643,7 @@ public class Program implements ChangeListener
                                     course_button.setVisible(true);
                                 }
                             }else{
-                                table.getSelectionModel().clearSelection();
-                                
+                                //table.getSelectionModel().clearSelection();
                             }
                         }
                     });
@@ -658,7 +654,6 @@ public class Program implements ChangeListener
                         {
                             // Save progress
                             Object infos = new Object();
-                            boolean id_exist = false;
                             for (int i = 0; i < model.getRowCount(); i++) 
                             {
                                 for (int j = 0; j < model.getColumnCount(); j++)
