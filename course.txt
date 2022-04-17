@@ -1,6 +1,12 @@
-java,cpp,math
 none,none,none
 Java,C++,math
 a,b,none
 Network,none,none
-FIS,Computer Org,none
+FIS,Computer,Org
+spss,adobe,xd
+none,java,none
+none,none,none
+none,none,none
+Network,Machine,Learning
+2,OpenGL,CPP
+Data Structures,none,none

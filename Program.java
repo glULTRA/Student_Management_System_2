@@ -18,14 +18,6 @@ public class Program implements ChangeListener
 
     static JButton registerButton = new JButton("Register a new student");
     static JButton studentsDataButton = new JButton("Students Data");
-    static JButton submit = new JButton("Submit");
-    static JButton add_course = new JButton("+  Add");
-    static JButton clear_course = new JButton("- Clear");
-    static JButton go = new JButton("Go");
-    static JButton search = new JButton("Search");
-    static JButton save = new JButton("Save");
-    static JButton delete = new JButton("Delete");
-    static JButton course_button = new JButton("Course");
 
     public static void addToModel(Student student, DefaultTableModel model){
         model.addRow(
@@ -166,11 +158,13 @@ public class Program implements ChangeListener
                 course_bar.setHorizontalAlignment(JTextField.CENTER);
                 course_bar.setBounds(70,70,150,60);
 
+                JButton add_course = new JButton("+  Add");
                 RoundBtn.desginButton(add_course, 10);
                 add_course.setOpaque(true);
                 add_course.setBackground(new Color(70,130,180));
                 add_course.setBounds(85, 150, 120,50);
 
+                JButton clear_course = new JButton("- Clear");
                 RoundBtn.desginButton(clear_course, 10);
                 clear_course.setOpaque(true);
                 clear_course.setBackground(new Color(217, 83, 79));
@@ -180,8 +174,42 @@ public class Program implements ChangeListener
                 JLabel showCourse = new JLabel();
                 showCourse.setBounds(50, 210 , 300, 100);
 
-                add_course.addChangeListener(new Program());
-                clear_course.addChangeListener(new Program());
+                add_course.addChangeListener(new ChangeListener() {
+                    public void stateChanged(ChangeEvent e){
+                        JButton btn = add_course;
+                        if (btn.getModel().isPressed()) {
+                            btn.setOpaque(true);
+                            btn.setBackground(new Color(0,191,255));
+                            
+                        } 
+                        else if (btn.getModel().isRollover()) {
+                            btn.setOpaque(true);
+                            btn.setBackground(new Color(30,144,255));
+                        } 
+                        else {
+                            RoundBtn.desginButton(btn, 10);
+                            btn.setOpaque(true);
+                            btn.setBackground(new Color(70,130,180));
+                        }
+                    }
+                });
+
+                clear_course.addChangeListener(new ChangeListener() {
+                    public void stateChanged(ChangeEvent e){
+                        JButton btn = clear_course;
+                        if (btn.getModel().isPressed()) {
+                            btn.setOpaque(true);
+                            btn.setBackground(new Color(255,105,180));
+                        } 
+                        else if (btn.getModel().isRollover()) {
+                            btn.setOpaque(true);
+                            btn.setBackground(new Color(255,20,147));
+                        } 
+                        else {
+                            btn.setBackground(new Color(217, 83, 79));
+                        }
+                    }
+                });
 
                 String courses[] = {"none", "none", "none"};
 
@@ -235,11 +263,29 @@ public class Program implements ChangeListener
                 
 
                 // Submit
+                JButton submit = new JButton("Submit");
                 submit.setBounds(155,590,180,70);
                 RoundBtn.desginButton(submit, 10);
                 submit.setOpaque(true);
                 submit.setBackground(new Color(50,205,50));
-                submit.addChangeListener(new Program());
+
+                submit.addChangeListener(new ChangeListener() {
+                    public void stateChanged(ChangeEvent e){
+                        JButton btn = submit;
+                        if (btn.getModel().isPressed()) {
+                            btn.setOpaque(true);
+                            btn.setBackground(new Color(0,255,0));
+                            
+                        } 
+                        else if (btn.getModel().isRollover()) {
+                            btn.setOpaque(true);
+                            btn.setBackground(new Color(152,251,152));
+                        } 
+                        else {
+                            btn.setBackground(new Color(50,205,50));
+                        }
+                    }
+                });
 
                 submit.addActionListener(
                     new ActionListener(){
@@ -259,16 +305,18 @@ public class Program implements ChangeListener
                                 student.setCourse3(courses[2]);
 
                                 
-                                if(student.getFullname().isEmpty() || student.getAddress().isEmpty() || student.getMobile().isEmpty()){
-                                    JOptionPane.showMessageDialog(newWindow, "please fill all informations!", "Warning", JOptionPane.WARNING_MESSAGE);
+                                if(!Student.isIdAvailable(students, student.getId())){
+                                    JOptionPane.showMessageDialog(newWindow, "ID is already exist !", "Error", JOptionPane.ERROR_MESSAGE);
                                 }
-                                else if(!Student.isIdAvailable(students, student.getId())){
-                                    JOptionPane.showMessageDialog(newWindow, "ID already exist !", "Error", JOptionPane.ERROR_MESSAGE);
-                                }else{
+                                else if(student.getFullname().isEmpty() || student.getAddress().isEmpty() || student.getMobile().isEmpty()){
+                                        JOptionPane.showMessageDialog(newWindow, "please fill all informations!", "Warning", JOptionPane.WARNING_MESSAGE);
+                                }
+                                else{
                                     students.add(student);
                                     Student.updateData(file, students);
                                     Course.updateData(course_file, students);
                                     JOptionPane.showMessageDialog(newWindow, "Added new student Successfuly !");
+                                    id_bar.setText("0");
                                     newWindow.dispose();
                                 }
                             } catch (Exception e2) {
@@ -333,9 +381,12 @@ public class Program implements ChangeListener
                     stage_box.setForeground(Color.WHITE);
                     stage_box.setBorder(new RoundBtn(10));
                     stage_box.setBounds(200, 100, 150, 50);
+                    stage_box.setSelectedIndex(4);
 
                     // Table
                     JTable table = new JTable(model);
+                    table.setBorder(new RoundBtn(10));
+                    table.setOpaque(false);
 
                     JScrollPane scrollPane = new JScrollPane(table);
                     scrollPane.setBackground(Color.BLACK);
@@ -354,33 +405,69 @@ public class Program implements ChangeListener
                     
 
                     // Go button
+                    JButton go = new JButton("Go");
                     RoundBtn.desginButton(go, 10);
                     go.setOpaque(true);
                     go.setBackground(new Color(70,130,180));
-                    go.addChangeListener(new Program());
                     go.setBounds(400, 100, 100, 50);
-
+                    
                     
                     // Search 
+                    JButton search = new JButton("Search");
                     RoundBtn.desginButton(search, 10);
                     search.setOpaque(true);
                     search.setBackground(new Color(50,205,50));
                     search.addChangeListener(new Program());
                     search.setBounds(400, 200, 100, 50);
-                    search.addChangeListener(new Program());
+
+                    search.addChangeListener(new ChangeListener() {
+                        public void stateChanged(ChangeEvent e){
+                            JButton btn = search ;
+                            if (btn.getModel().isPressed()) {
+                                btn.setOpaque(true);
+                                btn.setBackground(new Color(0,255,0));
+                                
+                            } 
+                            else if (btn.getModel().isRollover()) {
+                                btn.setOpaque(true);
+                                btn.setBackground(new Color(152,251,152));
+                            } 
+                            else {
+                                btn.setBackground(new Color(50,205,50));
+                            }
+                        }
+                    });
+                    go.addChangeListener(new ChangeListener() {
+                        public void stateChanged(ChangeEvent e){
+                            JButton btn = go;
+                            if (btn.getModel().isPressed()) {
+                                btn.setOpaque(true);
+                                btn.setBackground(new Color(0,191,255));
+                                
+                            } 
+                            else if (btn.getModel().isRollover()) {
+                                btn.setOpaque(true);
+                                btn.setBackground(new Color(30,144,255));
+                            } 
+                            else {
+                                RoundBtn.desginButton(btn, 10);
+                                btn.setOpaque(true);
+                                btn.setBackground(new Color(70,130,180));
+                            }
+                        }
+                    });
 
                     // Search bar
-                    JTextField search_bar = new JTextField("Search");
+                    JTextField search_bar = new JTextField("Search by ID");
                     RoundBtn.desginButton(search_bar);
                     search_bar.setOpaque(true);
-                    search_bar.setBounds(200, 200, 200, 50);
+                    search_bar.setBounds(200, 200, 190, 50);
 
                     search.addActionListener(
                         new ActionListener(){
                             public void actionPerformed(ActionEvent e)
                             {
                                 // Go for new data
-
                                 try {
                                     int id = Integer.parseInt(search_bar.getText());
                                     boolean id_found = false;
@@ -404,14 +491,16 @@ public class Program implements ChangeListener
                         }
                     );
 
- 
                     go.addActionListener(
                          new ActionListener(){
+                            int selectedStage;
                              public void actionPerformed(ActionEvent e){
                                 // Go for new data
-                                int selectedStage = stage_box.getSelectedIndex() + 1;
+                                selectedStage = stage_box.getSelectedIndex() + 1;
+                                
                                 model.getDataVector().removeAllElements();
                                 table.repaint();
+                                table.getSelectionModel().clearSelection();
                                 if(selectedStage == 5){
                                     for (Student student : students) {
                                         addToModel(student, model);
@@ -432,6 +521,7 @@ public class Program implements ChangeListener
                      );
 
                     // Course button
+                    JButton course_button = new JButton("Course");
                     RoundBtn.desginButton(course_button, 10);
                     course_button.setOpaque(true);
                     course_button.setBackground(new Color(255,140,0));
@@ -440,6 +530,7 @@ public class Program implements ChangeListener
                     
 
                     // Save button
+                    JButton save = new JButton("Save");
                     RoundBtn.desginButton(save, 10);
                     save.setOpaque(true);
                     save.setBackground(new Color(70,130,180));
@@ -447,15 +538,73 @@ public class Program implements ChangeListener
                     save.setVisible(false);
                     
                     // Delete button
+                    JButton delete = new JButton("Delete");
                     RoundBtn.desginButton(delete, 10);
                     delete.setOpaque(true);
                     delete.setBackground(new Color(217, 83, 79));
                     delete.setBounds(700,470, 100,50);
 
 
-                    course_button.addChangeListener(new Program());
-                    delete.addChangeListener(new Program());
-                    save.addChangeListener(new Program());
+                    course_button.addChangeListener(
+                        new ChangeListener() {
+                            @Override
+                            public void stateChanged(ChangeEvent e) {
+                                JButton btn = course_button;
+                                if (btn.getModel().isPressed()) {
+                                    btn.setOpaque(true);
+                                    btn.setBackground(new Color(255,127,80));
+                                    
+                                } 
+                                else if (btn.getModel().isRollover()) {
+                                    btn.setOpaque(true);
+                                    btn.setBackground(new Color(255,215,0));
+                                } 
+                                else {
+                                    RoundBtn.desginButton(btn, 10);
+                                    btn.setOpaque(true);
+                                    btn.setBackground(new Color(255,140,0));
+                                }
+                            }
+                        }
+                    );
+                    delete.addChangeListener(
+                        new ChangeListener() {
+                            @Override
+                            public void stateChanged(ChangeEvent e) {
+                                JButton btn = delete;
+                                if (btn.getModel().isPressed()) {
+                                    btn.setOpaque(true);
+                                    btn.setBackground(new Color(255,105,180));
+                                } 
+                                else if (btn.getModel().isRollover()) {
+                                    btn.setOpaque(true);
+                                    btn.setBackground(new Color(255,20,147));
+                                } 
+                                else {
+                                    btn.setBackground(new Color(217, 83, 79));
+                                }
+                            }
+                        }
+                    );
+                    save.addChangeListener(new ChangeListener() {
+                        public void stateChanged(ChangeEvent e){
+                            JButton btn = save;
+                            if (btn.getModel().isPressed()) {
+                                btn.setOpaque(true);
+                                btn.setBackground(new Color(0,191,255));
+                                
+                            } 
+                            else if (btn.getModel().isRollover()) {
+                                btn.setOpaque(true);
+                                btn.setBackground(new Color(30,144,255));
+                            } 
+                            else {
+                                RoundBtn.desginButton(btn, 10);
+                                btn.setOpaque(true);
+                                btn.setBackground(new Color(70,130,180));
+                            }
+                        }
+                    });
 
                     delete.addActionListener(new ActionListener() 
                     {
@@ -496,6 +645,9 @@ public class Program implements ChangeListener
                                     save.setVisible(true);
                                     course_button.setVisible(true);
                                 }
+                            }else{
+                                table.getSelectionModel().clearSelection();
+                                
                             }
                         }
                     });
@@ -506,6 +658,7 @@ public class Program implements ChangeListener
                         {
                             // Save progress
                             Object infos = new Object();
+                            boolean id_exist = false;
                             for (int i = 0; i < model.getRowCount(); i++) 
                             {
                                 for (int j = 0; j < model.getColumnCount(); j++)
@@ -513,7 +666,8 @@ public class Program implements ChangeListener
                                     infos = model.getValueAt(i, j);
                                     if(j == 0)
                                     {
-                                        students.get(i).setId(Integer.parseInt(infos.toString()));
+                                        int id =Integer.parseInt(infos.toString()); 
+                                        students.get(i).setId(id);
                                     }else if(j == 1){
                                         students.get(i).setFullname(infos.toString());
                                     }else if(j == 2){
@@ -525,11 +679,12 @@ public class Program implements ChangeListener
                                     }
                                 }
                                 Student.updateData(file, students);
-                                save.setVisible(false);
-                                JOptionPane.showMessageDialog(newWindow , "Saved successfuly!");
-                                table.getSelectionModel().clearSelection();
-                                return;
                             }
+                            save.setVisible(false);
+                            course_button.setVisible(false);
+                            table.getSelectionModel().clearSelection();
+                            JOptionPane.showMessageDialog(newWindow , "Saved successfuly!");
+                            return;
                         }
                     });
                     course_button.addActionListener(new ActionListener()
@@ -558,12 +713,15 @@ public class Program implements ChangeListener
                                 }
                                 
                             }
+                            course_data += "</html>";
                             if(j!=0){
                                 JOptionPane.showMessageDialog(newWindow, course_data);
                             }else{
                                 JOptionPane.showMessageDialog(newWindow, "Didn't joined any course!");
                             }
                             table.getSelectionModel().clearSelection();
+                            save.setVisible(false);
+                            course_button.setVisible(false);
                             j=0;
                         }
                     });
@@ -585,9 +743,10 @@ public class Program implements ChangeListener
                         @Override
                         public void windowClosing(WindowEvent e) {
                             model.getDataVector().removeAllElements();
+                            
                         }
                     });
-
+                    table.clearSelection();
                     newWindow.setVisible(true);
                 }
             }
@@ -631,89 +790,6 @@ public class Program implements ChangeListener
             } 
             else {
                 RoundBtn.desginButton(studentsDataButton, 10);
-            }
-        }
-        if(e.getSource() == submit || e.getSource() == search){
-            JButton btn = e.getSource().equals(search) ? search : submit;
-            if (btn.getModel().isPressed()) {
-                btn.setOpaque(true);
-                btn.setBackground(new Color(0,255,0));
-                
-            } 
-            else if (btn.getModel().isRollover()) {
-                btn.setOpaque(true);
-                btn.setBackground(new Color(152,251,152));
-            } 
-            else {
-                btn.setBackground(new Color(50,205,50));
-            }
-        }
-        if(e.getSource() == add_course || e.getSource() == save){
-            JButton btn = e.getSource().equals(add_course) ? add_course : save;
-            if (btn.getModel().isPressed()) {
-                btn.setOpaque(true);
-                btn.setBackground(new Color(0,191,255));
-                
-            } 
-            else if (btn.getModel().isRollover()) {
-                btn.setOpaque(true);
-                btn.setBackground(new Color(30,144,255));
-            } 
-            else {
-                RoundBtn.desginButton(btn, 10);
-                btn.setOpaque(true);
-                btn.setBackground(new Color(70,130,180));
-            }
-        }
-
-        if(e.getSource() == clear_course || e.getSource() == delete){
-            JButton btn = e.getSource().equals(clear_course) ? clear_course : delete;
-            if (btn.getModel().isPressed()) {
-                btn.setOpaque(true);
-                btn.setBackground(new Color(255,105,180));
-            } 
-            else if (btn.getModel().isRollover()) {
-                btn.setOpaque(true);
-                btn.setBackground(new Color(255,20,147));
-            } 
-            else {
-                btn.setBackground(new Color(217, 83, 79));
-            }
-        }
-        if(e.getSource() == go)
-        {
-            JButton btn = go;
-            if (btn.getModel().isPressed()) {
-                btn.setOpaque(true);
-                btn.setBackground(new Color(0,191,255));
-                
-            } 
-            else if (btn.getModel().isRollover()) {
-                btn.setOpaque(true);
-                btn.setBackground(new Color(30,144,255));
-            } 
-            else {
-                RoundBtn.desginButton(btn, 10);
-                btn.setOpaque(true);
-                btn.setBackground(new Color(70,130,180));
-            }
-        }
-
-        if(e.getSource() == course_button){
-            JButton btn = course_button;
-            if (btn.getModel().isPressed()) {
-                btn.setOpaque(true);
-                btn.setBackground(new Color(255,127,80));
-                
-            } 
-            else if (btn.getModel().isRollover()) {
-                btn.setOpaque(true);
-                btn.setBackground(new Color(255,215,0));
-            } 
-            else {
-                RoundBtn.desginButton(btn, 10);
-                btn.setOpaque(true);
-                btn.setBackground(new Color(255,140,0));
             }
         }
     }
