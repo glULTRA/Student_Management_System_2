@@ -139,23 +139,23 @@ public class Program implements ChangeListener
                 stage_box.setBounds(800, 280, 150, 30);
 
                 // Courses!
-                JPanel course_panel = new JPanel(){
-                    @Override
-                    protected void paintComponent(Graphics grphcs) {
-                        super.paintComponent(grphcs);
-                        Graphics2D g2d = (Graphics2D) grphcs;
-                        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                                RenderingHints.VALUE_ANTIALIAS_ON);
-                        GradientPaint gp = new GradientPaint(0, 0,
-                                getBackground().brighter().brighter(), 255, getHeight(),
-                                getBackground().darker().darker());
-                        g2d.setPaint(gp);
-                        g2d.fillRect(0, 0, getWidth(), getHeight()); 
-
-                    }
-                };
+                JPanel course_panel = new JPanel();//{
+                //    @Override
+                //    protected void paintComponent(Graphics grphcs) {
+                //        super.paintComponent(grphcs);
+                //        Graphics2D g2d = (Graphics2D) grphcs;
+                //        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                //                RenderingHints.VALUE_ANTIALIAS_ON);
+                //        GradientPaint gp = new GradientPaint(0, 0,
+                //                getBackground().brighter().brighter(), 255, getHeight(),
+                //                getBackground().darker().darker());
+                //        g2d.setPaint(gp);
+                //        g2d.fillRect(0, 0, getWidth(), getHeight()); 
+//
+                //    }
+                //};
                 course_panel.setLayout(null);
-                course_panel.setBackground(new Color(255,240,70));
+                course_panel.setBackground(new Color(67, 145, 155));
                 course_panel.setBounds(800, 400, 300,370);
                 course_panel.setBorder(new RoundBtn(19));
 
@@ -167,14 +167,14 @@ public class Program implements ChangeListener
                 JTextField course_bar = new JTextField("new courses..");
                 RoundBtn.desginButton(course_bar);
                 course_bar.setOpaque(true);
-                course_bar.setBackground(new Color(	230,190,70));
+                course_bar.setBackground(new Color(48, 170, 221));
                 course_bar.setHorizontalAlignment(JTextField.CENTER);
                 course_bar.setBounds(70,70,150,60);
 
                 JButton add_course = new JButton("+  Add");
                 RoundBtn.desginButton(add_course, 10);
                 add_course.setOpaque(true);
-                add_course.setBackground(new Color(70,130,180));
+                add_course.setBackground(new Color(48, 170, 221));
                 add_course.setBounds(85, 150, 120,50);
 
                 JButton clear_course = new JButton("- Clear");
@@ -202,7 +202,7 @@ public class Program implements ChangeListener
                         else {
                             RoundBtn.desginButton(btn, 10);
                             btn.setOpaque(true);
-                            btn.setBackground(new Color(70,130,180));
+                            btn.setBackground(new Color(48, 170, 221));
                         }
                     }
                 });
