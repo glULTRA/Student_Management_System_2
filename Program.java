@@ -6,10 +6,10 @@ import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class Program implements ChangeListener
+public class Program implements ChangeListener ,Border
 {
-    public static JFrame window = null;
-    public static ArrayList<Student> students = new ArrayList<Student>();
+    public static JFrame frame = null;
+    public static ArrayList<Student> std_list = new ArrayList<Student>();
     public static final String file = "file.txt";
     public static final String course_file = "course.txt";
 
@@ -17,32 +17,20 @@ public class Program implements ChangeListener
     static DefaultTableModel model = new DefaultTableModel(titles,0);
 
     static JButton registerButton = new JButton("Register a new student");
-    static JButton studentsDataButton = new JButton("Students Data");
+    static JButton std_listDataButton = new JButton("std_list Data");
 
-    public static void addToModel(Student student, DefaultTableModel model){
-        model.addRow(
-            new Object[]{
-                student.getId(),
-                student.getFullname(),
-                student.getAddress(),
-                student.getMobile(),
-                student.getStage(),
-                student.getDepartment(),
-            }
-        );
-    }
 
     public static void main(String[] args) 
     {
         // Load data
-        Importer.loadData(file, course_file, students);
+        Importer.loadData(file, course_file, std_list);
         
-        // Creating Window
-        window = new JFrame("Student Management System");
-        window.setBounds(0, 0, 1920,1080);
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        window.setLayout(null);
-        window.getContentPane().setBackground(Color.WHITE);
+        // Creating frame
+        frame = new JFrame("Student Management System");
+        frame.setBounds(0, 0, 1920,1080);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(null);
+        frame.getContentPane().setBackground(Color.WHITE);
 
 
         // Home
@@ -58,23 +46,23 @@ public class Program implements ChangeListener
         
         // buttons
         registerButton.setBounds(610,350,300,50);
-        RoundBtn.desginButton(registerButton, 10);
+        Program.desginButton(registerButton, 10);
 
-        studentsDataButton.setBounds(610,500,300,50);
-        RoundBtn.desginButton(studentsDataButton, 10);
+        std_listDataButton.setBounds(610,500,300,50);
+        Program.desginButton(std_listDataButton, 10);
 
-        registerButton.addChangeListener(new Program());
-        studentsDataButton.addChangeListener(new Program());
+        registerButton.addChangeListener(new Program(25));
+        std_listDataButton.addChangeListener(new Program(25));
 
         registerButton.addActionListener(new ActionListener()
         {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Creating new window for inputing data.
-                JFrame newWindow = new JFrame("Entering data!");
-                newWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                newWindow.setLayout(null);
-                newWindow.getContentPane().setBackground(Color.WHITE);
+                // Creating new frame for inputing data.
+                JFrame newframe = new JFrame("Entering data!");
+                newframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                newframe.setLayout(null);
+                newframe.getContentPane().setBackground(Color.WHITE);
 
                 JPanel panel1 = new JPanel();
                 panel1.setBounds(0, 0, 1920, 1080);
@@ -89,44 +77,44 @@ public class Program implements ChangeListener
                 // Input forms
                 // ID
                 JLabel id = new JLabel("<html><h2 style=\"color:#0275d8\">ID</h2></html>");
-                RoundBtn.desginButton(id);
+                Program.desginButton(id);
                 id.setBounds(130, 100, 50, 50);
 
                 JTextField id_bar = new JTextField();
-                RoundBtn.desginButton(id_bar);
+                Program.desginButton(id_bar);
                 id_bar.setBounds(130,150,130,60);
                 id_bar.setPreferredSize(new Dimension(80,20));
 
                 // Fullname
                 JLabel fullname = new JLabel("<html><h2  style=\"color:#0275d8\">Fullname</h2></html>");
-                RoundBtn.desginButton(fullname);
+                Program.desginButton(fullname);
                 fullname.setBounds(130, 210, 130, 50);
 
                 JTextField fullname_bar = new JTextField();
-                RoundBtn.desginButton(fullname_bar);
+                Program.desginButton(fullname_bar);
                 fullname_bar.setBounds(130,260,200,60);
 
                 // Address
                 JLabel address = new JLabel("<html><h2  style=\"color:#0275d8\"> Address</h2></html>");
-                RoundBtn.desginButton(address);
+                Program.desginButton(address);
                 address.setBounds(130, 320, 100, 50);
 
                 JTextField address_bar = new JTextField();
-                RoundBtn.desginButton(address_bar);
+                Program.desginButton(address_bar);
                 address_bar.setBounds(130,370,200,60);
 
                 // Mobile
                 JLabel mobile = new JLabel("<html><h2 style=\"color:#0275d8\">Phone Number</h2></html>");
-                RoundBtn.desginButton(mobile);
+                Program.desginButton(mobile);
                 mobile.setBounds(800, 100, 140, 50);
 
                 JTextField mobile_bar = new JTextField();
-                RoundBtn.desginButton(mobile_bar);
+                Program.desginButton(mobile_bar);
                 mobile_bar.setBounds(800,150,200,60);
 
                 // Stage
                 JLabel stage = new JLabel("<html><h2 style=\"background: linear-gradient(to bottom, #33ccff 0%, #ff99cc 100%);\">Stage</h2></html>");
-                RoundBtn.desginButton(stage);
+                Program.desginButton(stage);
                 stage.setBounds(800, 220, 100, 50);
 
                 String stages[] = {"1", "2", "3", "4"};
@@ -139,46 +127,46 @@ public class Program implements ChangeListener
                 stage_box.setBounds(800, 280, 150, 30);
 
                 // Courses!
-                JPanel course_panel = new JPanel();//{
-                //    @Override
-                //    protected void paintComponent(Graphics grphcs) {
-                //        super.paintComponent(grphcs);
-                //        Graphics2D g2d = (Graphics2D) grphcs;
-                //        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                //                RenderingHints.VALUE_ANTIALIAS_ON);
-                //        GradientPaint gp = new GradientPaint(0, 0,
-                //                getBackground().brighter().brighter(), 255, getHeight(),
-                //                getBackground().darker().darker());
-                //        g2d.setPaint(gp);
-                //        g2d.fillRect(0, 0, getWidth(), getHeight()); 
-//
-                //    }
-                //};
+                JPanel course_panel = new JPanel(){
+                   @Override
+                   protected void paintComponent(Graphics grphcs) {
+                       super.paintComponent(grphcs);
+                       Graphics2D g2d = (Graphics2D) grphcs;
+                       g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                               RenderingHints.VALUE_ANTIALIAS_ON);
+                       GradientPaint gp = new GradientPaint(0, 0,
+                               getBackground().brighter().brighter(), 255, getHeight(),
+                               getBackground().darker().darker());
+                       g2d.setPaint(gp);
+                       g2d.fillRect(0, 0, getWidth(), getHeight()); 
+
+                   }
+                };
                 course_panel.setLayout(null);
                 course_panel.setBackground(new Color(67, 145, 155));
                 course_panel.setBounds(800, 400, 300,370);
-                course_panel.setBorder(new RoundBtn(19));
+                course_panel.setBorder(new Program(19));
 
                 // course
                 JLabel course = new JLabel("Courses");
-                RoundBtn.desginButton(course);
+                Program.desginButton(course);
                 course.setBounds(100, 0, 100, 50);
 
                 JTextField course_bar = new JTextField("new courses..");
-                RoundBtn.desginButton(course_bar);
+                Program.desginButton(course_bar);
                 course_bar.setOpaque(true);
                 course_bar.setBackground(new Color(48, 170, 221));
                 course_bar.setHorizontalAlignment(JTextField.CENTER);
                 course_bar.setBounds(70,70,150,60);
 
                 JButton add_course = new JButton("+  Add");
-                RoundBtn.desginButton(add_course, 10);
+                Program.desginButton(add_course, 10);
                 add_course.setOpaque(true);
                 add_course.setBackground(new Color(48, 170, 221));
                 add_course.setBounds(85, 150, 120,50);
 
                 JButton clear_course = new JButton("- Clear");
-                RoundBtn.desginButton(clear_course, 10);
+                Program.desginButton(clear_course, 10);
                 clear_course.setOpaque(true);
                 clear_course.setBackground(new Color(217, 83, 79));
                 clear_course.setBounds(190, 310, 100,50);
@@ -186,6 +174,7 @@ public class Program implements ChangeListener
 
                 JLabel showCourse = new JLabel();
                 showCourse.setBounds(50, 210 , 300, 100);
+                showCourse.setForeground(Color.WHITE);
 
                 add_course.addChangeListener(new ChangeListener() {
                     public void stateChanged(ChangeEvent e){
@@ -200,7 +189,7 @@ public class Program implements ChangeListener
                             btn.setBackground(new Color(30,144,255));
                         } 
                         else {
-                            RoundBtn.desginButton(btn, 10);
+                            Program.desginButton(btn, 10);
                             btn.setOpaque(true);
                             btn.setBackground(new Color(48, 170, 221));
                         }
@@ -240,7 +229,7 @@ public class Program implements ChangeListener
                             {
                                 clear_course.setVisible(true);
                                 if(i > 2){
-                                    JOptionPane.showMessageDialog(newWindow , "Sorry can't add more than 3 course!", "Maximum course added!", JOptionPane.WARNING_MESSAGE);
+                                    JOptionPane.showMessageDialog(newframe , "Sorry can't add more than 3 course!", "Maximum course added!", JOptionPane.WARNING_MESSAGE);
                                     return;
                                 }
                                 if(i == 0){
@@ -278,7 +267,7 @@ public class Program implements ChangeListener
                 // Submit
                 JButton submit = new JButton("Submit");
                 submit.setBounds(155,590,180,70);
-                RoundBtn.desginButton(submit, 10);
+                Program.desginButton(submit, 10);
                 submit.setOpaque(true);
                 submit.setBackground(new Color(50,205,50));
 
@@ -318,22 +307,22 @@ public class Program implements ChangeListener
                                 student.setCourse3(courses[2]);
 
                                 
-                                if(!Student.isIdAvailable(students, student.getId())){
-                                    JOptionPane.showMessageDialog(newWindow, "ID is already exist !", "Error", JOptionPane.ERROR_MESSAGE);
+                                if(!Student.isIdAvailable(std_list, student.getId())){
+                                    JOptionPane.showMessageDialog(newframe, "ID is already exist !", "Error", JOptionPane.ERROR_MESSAGE);
                                 }
                                 else if(student.getFullname().isEmpty() || student.getAddress().isEmpty() || student.getMobile().isEmpty()){
-                                        JOptionPane.showMessageDialog(newWindow, "please fill all informations!", "Warning", JOptionPane.WARNING_MESSAGE);
+                                        JOptionPane.showMessageDialog(newframe, "please fill all informations!", "Warning", JOptionPane.WARNING_MESSAGE);
                                 }
                                 else{
-                                    students.add(student);
-                                    Student.updateData(file, students);
-                                    Course.updateData(course_file, students);
-                                    JOptionPane.showMessageDialog(newWindow, "Added new student Successfuly !");
+                                    std_list.add(student);
+                                    Student.updateData(file, std_list);
+                                    Course.updateData(course_file, std_list);
+                                    JOptionPane.showMessageDialog(newframe, "Added new student Successfuly !");
                                     id_bar.setText("0");
-                                    newWindow.dispose();
+                                    newframe.dispose();
                                 }
                             } catch (Exception e2) {
-                                JOptionPane.showMessageDialog(newWindow, "please make sure id is number!", "Warning", JOptionPane.WARNING_MESSAGE);
+                                JOptionPane.showMessageDialog(newframe, "please make sure id is number!", "Warning", JOptionPane.WARNING_MESSAGE);
 
                             }
                         }
@@ -361,28 +350,28 @@ public class Program implements ChangeListener
                 panel1.add(stage_box);
                 panel1.add(course_panel);
                 panel1.add(submit);
-                newWindow.add(panel1);
+                newframe.add(panel1);
 
-                newWindow.setBounds(0,0, 1920,1080);
-                newWindow.setVisible(true);
+                newframe.setBounds(0,0, 1920,1080);
+                newframe.setVisible(true);
             }
         });
 
        
-        studentsDataButton.addActionListener(
+        std_listDataButton.addActionListener(
             new ActionListener(){
                 public void actionPerformed(ActionEvent e)
                 {
-                    // New window for data
-                    JFrame newWindow = new JFrame();
-                    newWindow.getContentPane().setBackground(Color.WHITE);
-                    newWindow.setLayout(null);
-                    newWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                    newWindow.setBounds(0, 0, 1920,1080);
+                    // New frame for data
+                    JFrame newframe = new JFrame();
+                    newframe.getContentPane().setBackground(Color.WHITE);
+                    newframe.setLayout(null);
+                    newframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    newframe.setBounds(0, 0, 1920,1080);
 
                     // Switch student Stages!
                     JLabel stage = new JLabel("Stage");
-                    RoundBtn.desginButton(stage);
+                    Program.desginButton(stage);
                     stage.setBounds(100, 100, 100, 50);
 
 
@@ -392,7 +381,7 @@ public class Program implements ChangeListener
                     stage_box.setFocusable(false);
                     stage_box.setBackground(new Color(70,130,180));
                     stage_box.setForeground(Color.WHITE);
-                    stage_box.setBorder(new RoundBtn(10));
+                    stage_box.setBorder(new Program(10));
                     stage_box.setBounds(200, 100, 150, 50);
                     stage_box.setSelectedIndex(4);
 
@@ -410,14 +399,23 @@ public class Program implements ChangeListener
                     Tpanel.setLayout(new BorderLayout());
 	                Tpanel.add(scrollPane);
 
-                    for (Student student : students) {
-                        addToModel(student, model);
+                    for (Student student : std_list) {
+                        model.addRow(
+                        new Object[]{
+                            student.getId(),
+                            student.getFullname(),
+                            student.getAddress(),
+                            student.getMobile(),
+                            student.getStage(),
+                            student.getDepartment(),
+                        }
+                        );
                     }
                     
 
                     // Go button
                     JButton go = new JButton("Go");
-                    RoundBtn.desginButton(go, 10);
+                    Program.desginButton(go, 10);
                     go.setOpaque(true);
                     go.setBackground(new Color(70,130,180));
                     go.setBounds(400, 100, 100, 50);
@@ -425,10 +423,10 @@ public class Program implements ChangeListener
                     
                     // Search 
                     JButton search = new JButton("Search");
-                    RoundBtn.desginButton(search, 10);
+                    Program.desginButton(search, 10);
                     search.setOpaque(true);
                     search.setBackground(new Color(50,205,50));
-                    search.addChangeListener(new Program());
+                    search.addChangeListener(new Program(25));
                     search.setBounds(400, 200, 100, 50);
 
                     search.addChangeListener(new ChangeListener() {
@@ -461,7 +459,7 @@ public class Program implements ChangeListener
                                 btn.setBackground(new Color(30,144,255));
                             } 
                             else {
-                                RoundBtn.desginButton(btn, 10);
+                                Program.desginButton(btn, 10);
                                 btn.setOpaque(true);
                                 btn.setBackground(new Color(70,130,180));
                             }
@@ -470,7 +468,7 @@ public class Program implements ChangeListener
 
                     // Search bar
                     JTextField search_bar = new JTextField("Search by ID");
-                    RoundBtn.desginButton(search_bar);
+                    Program.desginButton(search_bar);
                     search_bar.setOpaque(true);
                     search_bar.setBounds(200, 200, 190, 50);
 
@@ -482,20 +480,29 @@ public class Program implements ChangeListener
                                 try {
                                     int id = Integer.parseInt(search_bar.getText());
                                     boolean id_found = false;
-                                    for (Student student : students) {
+                                    for (Student student : std_list) {
                                         if(student.getId() == id){
                                             model.getDataVector().removeAllElements();
                                             table.repaint();
-                                            addToModel(student, model);
+                                            model.addRow(
+                                                new Object[]{
+                                                    student.getId(),
+                                                    student.getFullname(),
+                                                    student.getAddress(),
+                                                    student.getMobile(),
+                                                    student.getStage(),
+                                                    student.getDepartment(),
+                                                }
+                                            );
                                             id_found = true;
                                             break;
                                         }
                                     }
                                     if(!id_found){
-                                        JOptionPane.showMessageDialog(newWindow, "ID is not exist !");
+                                        JOptionPane.showMessageDialog(newframe, "ID is not exist !");
                                     }
                                 } catch (Exception e2) {
-                                    JOptionPane.showMessageDialog(newWindow, "Please search only by ID!");
+                                    JOptionPane.showMessageDialog(newframe, "Please search only by ID!");
                                 }
                                 table.getSelectionModel().clearSelection();
                             }
@@ -504,24 +511,42 @@ public class Program implements ChangeListener
 
                     go.addActionListener(
                          new ActionListener(){
-                            int selectedStage;
+                            int SELECTED_STAGE;
                              public void actionPerformed(ActionEvent e){
                                 // Go for new data
-                                selectedStage = stage_box.getSelectedIndex() + 1;
+                                SELECTED_STAGE = stage_box.getSelectedIndex() + 1;
                                 
                                 model.getDataVector().removeAllElements();
                                 table.repaint();
-                                if(selectedStage == 5){
-                                    for (Student student : students) {
-                                        addToModel(student, model);
+                                if(SELECTED_STAGE == 5){
+                                    for (Student student : std_list) {
+                                        model.addRow(
+                                            new Object[]{
+                                                student.getId(),
+                                                student.getFullname(),
+                                                student.getAddress(),
+                                                student.getMobile(),
+                                                student.getStage(),
+                                                student.getDepartment(),
+                                            }
+                                        );
                                     }
                                 }else
                                 {
-                                    for (Student student : students)
+                                    for (Student student : std_list)
                                     {
-                                        if(student.getStage() ==  selectedStage)
+                                        if(student.getStage() ==  SELECTED_STAGE)
                                         {
-                                            addToModel(student, model);
+                                            model.addRow(
+                                            new Object[]{
+                                                student.getId(),
+                                                student.getFullname(),
+                                                student.getAddress(),
+                                                student.getMobile(),
+                                                student.getStage(),
+                                                student.getDepartment(),
+                                            }
+                                        );
                                         }
                                     }
                                 }
@@ -532,7 +557,7 @@ public class Program implements ChangeListener
 
                     // Course button
                     JButton course_button = new JButton("Course");
-                    RoundBtn.desginButton(course_button, 10);
+                    Program.desginButton(course_button, 10);
                     course_button.setOpaque(true);
                     course_button.setBackground(new Color(255,140,0));
                     course_button.setBounds(700,410, 100,50);
@@ -541,7 +566,7 @@ public class Program implements ChangeListener
 
                     // Save button
                     JButton save = new JButton("Save");
-                    RoundBtn.desginButton(save, 10);
+                    Program.desginButton(save, 10);
                     save.setOpaque(true);
                     save.setBackground(new Color(70,130,180));
                     save.setBounds(700,530, 100,50);
@@ -549,7 +574,7 @@ public class Program implements ChangeListener
                     
                     // Delete button
                     JButton delete = new JButton("Delete");
-                    RoundBtn.desginButton(delete, 10);
+                    Program.desginButton(delete, 10);
                     delete.setOpaque(true);
                     delete.setBackground(new Color(217, 83, 79));
                     delete.setBounds(700,470, 100,50);
@@ -570,7 +595,7 @@ public class Program implements ChangeListener
                                     btn.setBackground(new Color(255,215,0));
                                 } 
                                 else {
-                                    RoundBtn.desginButton(btn, 10);
+                                    Program.desginButton(btn, 10);
                                     btn.setOpaque(true);
                                     btn.setBackground(new Color(255,140,0));
                                 }
@@ -609,7 +634,7 @@ public class Program implements ChangeListener
                                 btn.setBackground(new Color(30,144,255));
                             } 
                             else {
-                                RoundBtn.desginButton(btn, 10);
+                                Program.desginButton(btn, 10);
                                 btn.setOpaque(true);
                                 btn.setBackground(new Color(70,130,180));
                             }
@@ -621,22 +646,22 @@ public class Program implements ChangeListener
                         public void actionPerformed(ActionEvent e)
                         {
                             try {
-                                int selected_item = table.getSelectedRow();
-                                Object selected_id = table.getModel().getValueAt(selected_item, 0);
-                                int id = Integer.parseInt(selected_id.toString());
+                                int SELECTED_ITEM = table.getSelectedRow();
+                                Object the_ID = table.getModel().getValueAt(SELECTED_ITEM, 0);
+                                int ID = Integer.parseInt(the_ID.toString());
 
-                                if(JOptionPane.showConfirmDialog(newWindow, "Do u want to delete ", "Delete!", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
-                                    for (Student st: students) {
-                                        if(st.getId() == id){
-                                            students.remove(st);
+                                if(JOptionPane.showConfirmDialog(newframe, "Do u want to delete ", "Delete!", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+                                    for (Student st: std_list) {
+                                        if(st.getId() == ID){
+                                            std_list.remove(st);
                                             break;
                                         }
                                     }
-                                    Student.updateData(file, students);
-                                    Course.updateData(course_file, students);
+                                    Student.updateData(file, std_list);
+                                    Course.updateData(course_file, std_list);
                                     save.setVisible(false);
                                     course_button.setVisible(false);
-                                    model.removeRow(selected_item);
+                                    model.removeRow(SELECTED_ITEM);
                                     
                                 }
                             } 
@@ -673,23 +698,21 @@ public class Program implements ChangeListener
                                     if(j == 0)
                                     {
                                         int id =Integer.parseInt(infos.toString()); 
-                                        students.get(i).setId(id);
+                                        std_list.get(i).setId(id);
                                     }else if(j == 1){
-                                        students.get(i).setFullname(infos.toString());
+                                        std_list.get(i).setFullname(infos.toString());
                                     }else if(j == 2){
-                                        students.get(i).setAddress(infos.toString());
+                                        std_list.get(i).setAddress(infos.toString());
                                     }else if(j == 3){
-                                        students.get(i).setMobile(infos.toString());
+                                        std_list.get(i).setMobile(infos.toString());
                                     }else if(j == 4){
-                                        students.get(i).setStage(Integer.parseInt(infos.toString()));
+                                        std_list.get(i).setStage(Integer.parseInt(infos.toString()));
                                     }
                                 }
-                                Student.updateData(file, students);
+                                Student.updateData(file, std_list);
                             }
-                            save.setVisible(false);
-                            course_button.setVisible(false);
                             table.getSelectionModel().clearSelection();
-                            JOptionPane.showMessageDialog(newWindow , "Saved successfuly!");
+                            JOptionPane.showMessageDialog(newframe , "Saved successfuly!");
                             return;
                         }
                     });
@@ -697,12 +720,12 @@ public class Program implements ChangeListener
                     {
                         public void actionPerformed(ActionEvent e)
                         {
-                            int selected_item = table.getSelectedRow();
-                            Object selected_id = table.getModel().getValueAt(selected_item, 0);
+                            int SELECTED_ITEM = table.getSelectedRow();
+                            Object selected_id = table.getModel().getValueAt(SELECTED_ITEM, 0);
                             int id = Integer.parseInt(selected_id.toString());
                             String course_data = "<html><h1>Courses !</h1>";
                             int j = 0;
-                            for (Student st: students) 
+                            for (Student st: std_list) 
                             {
                                 if(st.getId() == id)
                                 {
@@ -721,13 +744,11 @@ public class Program implements ChangeListener
                             }
                             course_data += "</html>";
                             if(j!=0){
-                                JOptionPane.showMessageDialog(newWindow, course_data);
+                                JOptionPane.showMessageDialog(newframe, course_data);
                             }else{
-                                JOptionPane.showMessageDialog(newWindow, "Didn't joined any course!");
+                                JOptionPane.showMessageDialog(newframe, "Didn't joined any course!");
                             }
                             table.getSelectionModel().clearSelection();
-                            save.setVisible(false);
-                            course_button.setVisible(false);
                             j=0;
                         }
                     });
@@ -735,38 +756,38 @@ public class Program implements ChangeListener
                     
         
                     
-                    newWindow.add(stage);
-                    newWindow.add(stage_box);
-                    newWindow.add(Tpanel);
-                    newWindow.add(course_button);
-                    newWindow.add(delete);
-                    newWindow.add(save);
-                    newWindow.add(go);
-                    newWindow.add(search);
-                    newWindow.add(search_bar);
+                    newframe.add(stage);
+                    newframe.add(stage_box);
+                    newframe.add(Tpanel);
+                    newframe.add(course_button);
+                    newframe.add(delete);
+                    newframe.add(save);
+                    newframe.add(go);
+                    newframe.add(search);
+                    newframe.add(search_bar);
                     
-                    newWindow.addWindowListener(new WindowAdapter() {
+                    newframe.addWindowListener(new WindowAdapter() {
                         @Override
                         public void windowClosing(WindowEvent e) {
                             model.getDataVector().removeAllElements();
-                            
                         }
                     });
+
                     table.clearSelection();
-                    newWindow.setVisible(true);
+                    newframe.setVisible(true);
                 }
             }
         );
         
 
         panel1.add(title);
-        panel1.add(studentsDataButton);
+        panel1.add(std_listDataButton);
         panel1.add(registerButton);
         
-        window.setLocationRelativeTo(null);
-        window.add(panel1);
+        frame.setLocationRelativeTo(null);
+        frame.add(panel1);
 
-        window.setVisible(true);
+        frame.setVisible(true);
     }
 
     @Override
@@ -782,30 +803,27 @@ public class Program implements ChangeListener
                 registerButton.setBackground(new Color(54, 69, 79));
             } 
             else {
-                RoundBtn.desginButton(registerButton, 10);
+                Program.desginButton(registerButton, 10);
             }
         }
-        if(e.getSource() == studentsDataButton){
-            if (studentsDataButton.getModel().isPressed()) {
-                studentsDataButton.setOpaque(true);
-                studentsDataButton.setBackground(new Color(240, 173, 78));
+        if(e.getSource() == std_listDataButton){
+            if (std_listDataButton.getModel().isPressed()) {
+                std_listDataButton.setOpaque(true);
+                std_listDataButton.setBackground(new Color(240, 173, 78));
             } 
-            else if (studentsDataButton.getModel().isRollover()) {
-                studentsDataButton.setOpaque(true);
-                studentsDataButton.setBackground(new Color(255, 195, 0));
+            else if (std_listDataButton.getModel().isRollover()) {
+                std_listDataButton.setOpaque(true);
+                std_listDataButton.setBackground(new Color(255, 195, 0));
             } 
             else {
-                RoundBtn.desginButton(studentsDataButton, 10);
+                Program.desginButton(std_listDataButton, 10);
             }
         }
     }
-}
 
 
-class RoundBtn implements Border
-{
     private int r;
-    RoundBtn(int r) {
+    Program(int r) {
         this.r = r;
     }
     public static void desginButton(JButton btn, int radius)
@@ -816,7 +834,7 @@ class RoundBtn implements Border
         btn.setOpaque(false);
         btn.setFocusPainted(false);
         btn.setContentAreaFilled(false);
-        btn.setBorder(new RoundBtn(radius));
+        btn.setBorder(new Program(radius));
     }
 
     public static void desginButton(JLabel lbl)
@@ -831,7 +849,7 @@ class RoundBtn implements Border
         txtFld.setForeground(Color.BLACK);
         txtFld.setOpaque(true);
         txtFld.setFont(new Font("Serif", Font.BOLD | Font.ITALIC, 17));
-        txtFld.setBorder(new RoundBtn(10));
+        txtFld.setBorder(new Program(10));
     }
     
 
