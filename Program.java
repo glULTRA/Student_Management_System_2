@@ -17,13 +17,37 @@ public class Program implements ChangeListener ,Border
     static DefaultTableModel model = new DefaultTableModel(titles,0);
 
     static JButton registerButton = new JButton("Register a new student");
-    static JButton std_listDataButton = new JButton("std_list Data");
+    static JButton std_listDataButton = new JButton("Students Data");
 
 
     public static void main(String[] args) 
     {
         // Load data
-        Importer.loadData(file, course_file, std_list);
+        try {
+            String student_data = Importer.read(file);
+            String course_data = Importer.read(course_file);
+            String []student_data_array = student_data.split("[, \n]");
+            String []course_data_array = course_data.split("[, \n]");
+            int j = 0;
+            int t = 0;
+            for (int i = 0; i < student_data_array.length/5; i++) 
+            {
+                Student student = new Student();
+                student.setId(Integer.parseInt(student_data_array[j++]));
+                student.setFullname(student_data_array[j++]);
+                student.setAddress(student_data_array[j++]);
+                student.setMobile(student_data_array[j++]);
+                student.setStage(Integer.parseInt(student_data_array[j++]));
+                j++;
+                student.setCourse1(course_data_array[t++]);
+                student.setCourse2(course_data_array[t++]);
+                student.setCourse3(course_data_array[t++]);
+                std_list.add(student);
+            }
+
+        } catch (Exception e) {
+
+        }
         
         // Creating frame
         frame = new JFrame("Student Management System");
